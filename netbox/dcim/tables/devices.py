@@ -151,7 +151,7 @@ class DeviceTable(TenancyColumnsMixin, ContactsColumnMixin, NetBoxTable):
         template_code=DEVICE_LINK,
         linkify=True
     )
-    status = columns.ChoiceFieldColumn()
+    status = columns.ChoiceFieldColumnStatus()
     region = tables.Column(
         accessor=Accessor('site__region'),
         linkify=True
@@ -226,7 +226,7 @@ class DeviceTable(TenancyColumnsMixin, ContactsColumnMixin, NetBoxTable):
             'vc_priority', 'description', 'config_template', 'comments', 'contacts', 'tags', 'created', 'last_updated',
         )
         default_columns = (
-            'pk', 'name', 'status', 'tenant', 'site', 'location', 'rack', 'device_role', 'manufacturer', 'device_type',
+            'name', 'status', 'site', 'location', 'rack', 'device_role', 'manufacturer', 'device_type', 'tags',
             'primary_ip',
         )
 
