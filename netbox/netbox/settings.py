@@ -24,7 +24,7 @@ from netbox.constants import RQ_QUEUE_DEFAULT, RQ_QUEUE_HIGH, RQ_QUEUE_LOW
 # Environment setup
 #
 
-VERSION = '3.4.9-dev'
+VERSION = '3.5-beta2'
 
 # Hostname
 HOSTNAME = platform.node()
@@ -86,12 +86,14 @@ CSRF_TRUSTED_ORIGINS = getattr(configuration, 'CSRF_TRUSTED_ORIGINS', [])
 DATE_FORMAT = getattr(configuration, 'DATE_FORMAT', 'N j, Y')
 DATETIME_FORMAT = getattr(configuration, 'DATETIME_FORMAT', 'N j, Y g:i a')
 DEBUG = getattr(configuration, 'DEBUG', False)
+DEFAULT_DASHBOARD = getattr(configuration, 'DEFAULT_DASHBOARD', None)
 DEVELOPER = getattr(configuration, 'DEVELOPER', False)
 DOCS_ROOT = getattr(configuration, 'DOCS_ROOT', os.path.join(os.path.dirname(BASE_DIR), 'docs'))
 EMAIL = getattr(configuration, 'EMAIL', {})
 EXEMPT_VIEW_PERMISSIONS = getattr(configuration, 'EXEMPT_VIEW_PERMISSIONS', [])
 FIELD_CHOICES = getattr(configuration, 'FIELD_CHOICES', {})
 FILE_UPLOAD_MAX_MEMORY_SIZE = getattr(configuration, 'FILE_UPLOAD_MAX_MEMORY_SIZE', 2621440)
+GIT_PATH = getattr(configuration, 'GIT_PATH', 'git')
 HTTP_PROXIES = getattr(configuration, 'HTTP_PROXIES', None)
 INTERNAL_IPS = getattr(configuration, 'INTERNAL_IPS', ('127.0.0.1', '::1'))
 JINJA2_FILTERS = getattr(configuration, 'JINJA2_FILTERS', {})
@@ -332,6 +334,7 @@ INSTALLED_APPS = [
     'social_django',
     'taggit',
     'timezone_field',
+    'core',
     'circuits',
     'dcim',
     'ipam',
@@ -342,7 +345,8 @@ INSTALLED_APPS = [
     'virtualization',
     'wireless',
     'django_rq',  # Must come after extras to allow overriding management commands
-    'drf_yasg',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
 ]
 
 # Middleware
@@ -358,12 +362,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'netbox.middleware.ExceptionHandlingMiddleware',
     'netbox.middleware.RemoteUserMiddleware',
-    'netbox.middleware.LoginRequiredMiddleware',
-    'netbox.middleware.DynamicConfigMiddleware',
-    'netbox.middleware.APIVersionMiddleware',
-    'netbox.middleware.ObjectChangeMiddleware',
+    'netbox.middleware.CoreMiddleware',
     'django_prometheus.middleware.PrometheusAfterMiddleware',
 ]
 
@@ -450,7 +450,7 @@ EXEMPT_EXCLUDE_MODELS = (
 )
 
 # All URLs starting with a string listed here are exempt from login enforcement
-EXEMPT_PATHS = (
+AUTH_EXEMPT_PATHS = (
     f'/{BASE_PATH}api/',
     f'/{BASE_PATH}graphql/',
     f'/{BASE_PATH}login/',
@@ -563,6 +563,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'netbox.api.renderers.FormlessBrowsableAPIRenderer',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'core.api.schema.NetBoxAutoSchema',
     'DEFAULT_VERSION': REST_FRAMEWORK_VERSION,
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.AcceptHeaderVersioning',
     'SCHEMA_COERCE_METHOD_NAMES': {
@@ -575,6 +576,20 @@ REST_FRAMEWORK = {
     'VIEW_NAME_FUNCTION': 'utilities.api.get_view_name',
 }
 
+#
+# DRF Spectacular
+#
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "NetBox API",
+    "DESCRIPTION": "API to access NetBox",
+    "LICENSE": {"name": "Apache v2 License"},
+    "VERSION": VERSION,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+}
 
 #
 # Graphene
@@ -584,49 +599,6 @@ GRAPHENE = {
     # Avoids naming collision on models with 'type' field; see
     # https://github.com/graphql-python/graphene-django/issues/185
     'DJANGO_CHOICE_FIELD_ENUM_V3_NAMING': True,
-}
-
-
-#
-# drf_yasg (OpenAPI/Swagger)
-#
-
-SWAGGER_SETTINGS = {
-    'DEFAULT_AUTO_SCHEMA_CLASS': 'utilities.custom_inspectors.NetBoxSwaggerAutoSchema',
-    'DEFAULT_FIELD_INSPECTORS': [
-        'utilities.custom_inspectors.CustomFieldsDataFieldInspector',
-        'utilities.custom_inspectors.NullableBooleanFieldInspector',
-        'utilities.custom_inspectors.ChoiceFieldInspector',
-        'utilities.custom_inspectors.SerializedPKRelatedFieldInspector',
-        'drf_yasg.inspectors.CamelCaseJSONFilter',
-        'drf_yasg.inspectors.ReferencingSerializerInspector',
-        'drf_yasg.inspectors.RelatedFieldInspector',
-        'drf_yasg.inspectors.ChoiceFieldInspector',
-        'drf_yasg.inspectors.FileFieldInspector',
-        'drf_yasg.inspectors.DictFieldInspector',
-        'drf_yasg.inspectors.JSONFieldInspector',
-        'drf_yasg.inspectors.SerializerMethodFieldInspector',
-        'drf_yasg.inspectors.SimpleFieldInspector',
-        'drf_yasg.inspectors.StringDefaultFieldInspector',
-    ],
-    'DEFAULT_FILTER_INSPECTORS': [
-        'drf_yasg.inspectors.CoreAPICompatInspector',
-    ],
-    'DEFAULT_INFO': 'netbox.urls.openapi_info',
-    'DEFAULT_MODEL_DEPTH': 1,
-    'DEFAULT_PAGINATOR_INSPECTORS': [
-        'utilities.custom_inspectors.NullablePaginatorInspector',
-        'drf_yasg.inspectors.DjangoRestResponsePagination',
-        'drf_yasg.inspectors.CoreAPICompatInspector',
-    ],
-    'SECURITY_DEFINITIONS': {
-        'Bearer': {
-            'type': 'apiKey',
-            'name': 'Authorization',
-            'in': 'header',
-        }
-    },
-    'VALIDATOR_URL': None,
 }
 
 
