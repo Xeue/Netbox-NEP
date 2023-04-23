@@ -17,10 +17,10 @@ const nbcm_views = {
     },
     '/dcim/devices/': {
         'Edit': ['edit/?return_url=$current_url$', 'mdi-pencil'],
+        'Layout': ['../../interface-connections/?device_id=$id$&export=switch-layout', 'mdi-grid-large'],
         'Interfaces': ['interfaces/', 'mdi-ethernet'],
         'Connections': ['../../interface-connections/?device_id=$id$', 'mdi-link'],
-        'Cables': ['../../cables/?device_id=$id$', 'mdi-ethernet-cable'],
-        'Layout': ['../../cables/?device_id=$id$&export=Cisco Switch Layout', 'mdi-grid-large']
+        'Cables': ['../../cables/?device_id=$id$', 'mdi-ethernet-cable']
     },
     '/dcim/status/': {
         'Planned': ['/api/dcim/devices/$id$/val=planned', 'mdi-lightbulb-on-10'],
@@ -342,6 +342,22 @@ function nbcm_add_burgers() {
     .nbcm-api-li > * {
         pointer-events: none;
     }
+
+    .logo-dark {
+        display: none;
+    }
+
+    .logo-light {
+        display: block;
+    }
+
+    html[data-netbox-color-mode="dark"] .logo-dark {
+        display: block;
+    }
+
+    html[data-netbox-color-mode="dark"] .logo-light {
+        display: none;
+    }
     
     @media (min-width: 850px) {
             .form.form-horizontal .noprint.bulk-buttons {
@@ -442,7 +458,10 @@ function nbcm_add_burgers() {
 
     for (k = 0; k < classes.length; k++) {
         const divs = document.getElementsByClassName(classes[k]);
+        console.log(classes[k]);
+        console.log(divs);
         for (i = 0; i < divs.length; i++) {
+            console.log(divs[i]);
             let links = [];
             links = Array.prototype.concat.apply(links, divs[i].getElementsByTagName('a'));
             links = Array.prototype.concat.apply(links, divs[i].getElementsByClassName('status_dropdown'));
@@ -499,6 +518,13 @@ if (nbcm_targetNode) {
     const nbcm_observerconfig = { childList: true, subtree: true };
     const nbcm_observer = new MutationObserver(nbcm_add_burgers);
     nbcm_observer.observe(nbcm_targetNode, nbcm_observerconfig);
+}
+
+const nbcm_targetNodeHome = document.getElementById('dashboard');
+if (nbcm_targetNodeHome) {
+    const nbcm_observerconfig = { childList: true, subtree: true };
+    const nbcm_observerHome = new MutationObserver(nbcm_add_burgers);
+    nbcm_observerHome.observe(nbcm_targetNodeHome, nbcm_observerconfig);
 }
 
 document.addEventListener("click", e => {
