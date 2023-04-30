@@ -359,6 +359,30 @@ function nbcm_add_burgers() {
         display: none;
     }
     
+    .link-custom {
+        white-space: nowrap;
+    }
+
+    table .link-custom {
+        display: inline-block;
+        padding: .35em .65em;
+        font-size: .75rem;
+        font-weight: 700;
+        line-height: 1;
+        color: rgb(255, 255, 255);
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .375rem;
+        background-color: rgb(33, 150, 243);
+    }
+
+    @media (max-width: 650px) {
+        #nbcmbox {
+            font-size: 2rem;
+        }
+    }
+    
     @media (min-width: 850px) {
             .form.form-horizontal .noprint.bulk-buttons {
                 position: sticky;
@@ -521,7 +545,7 @@ if (nbcm_targetNode) {
 }
 
 const nbcm_targetNodeHome = document.getElementById('dashboard');
-if (nbcm_targetNodeHome) {
+if (nbcm_targetNodeHome && false) {
     const nbcm_observerconfig = { childList: true, subtree: true };
     const nbcm_observerHome = new MutationObserver(nbcm_add_burgers);
     nbcm_observerHome.observe(nbcm_targetNodeHome, nbcm_observerconfig);
