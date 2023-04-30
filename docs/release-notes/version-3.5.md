@@ -1,13 +1,19 @@
 # NetBox v3.5
 
-## v3.5-beta2 (2023-04-18)
+## v3.5.1 (FUTURE)
+
+---
+
+## v3.5.0 (2023-04-27)
 
 ### Breaking Changes
 
 * The `account` field has been removed from the provider model. This information is now tracked using the new provider account model. Multiple accounts can be assigned per provider.
+* A minimum length of 50 characters is now enforced for the `SECRET_KEY` configuration parameter.
 * The JobResult model has been moved from the `extras` app to `core` and renamed to Job. Accordingly, its REST API endpoint has been moved from `/api/extras/job-results/` to `/api/core/jobs/`.
 * The `obj_type` field on the Job model (previously JobResult) has been renamed to `object_type` for consistency with other models.
 * The `JOBRESULT_RETENTION` configuration parameter has been renamed to `JOB_RETENTION`.
+* The `obj` context variable is no longer passed when rendering custom links: Use `object` instead.
 * The REST API schema is now generated using the OpenAPI 3.0 spec
 * The URLs for the REST API schema documentation have changed:
     * `/api/docs/` is now `/api/schema/swagger-ui/`
@@ -27,7 +33,7 @@ NetBox now has the ability to synchronize arbitrary data from external sources t
 
 This release introduces the ability to render device configurations from Jinja2 templates natively within NetBox, via both the UI and REST API. The new [ConfigTemplate](../models/extras/configtemplate.md) model stores template code (which may be defined locally or sourced from remote data files). The rendering engine passes data gleaned from both config contexts and request parameters to generate complete configurations suitable for direct application to network devices.
 
-#### NAPALM Plugin ([#10520](https://github.com/netbox-community/netbox/issues/10520))
+#### NAPALM Integration Plugin ([#10520](https://github.com/netbox-community/netbox/issues/10520))
 
 The NAPALM integration feature found in previous NetBox releases has been moved from the core application to a [dedicated plugin](https://github.com/netbox-community/netbox-napalm). This allows greater control over the feature's configuration and will unlock additional potential as a separate project.
 
@@ -70,21 +76,17 @@ Two new webhook trigger events have been introduced: `job_start` and `job_end`. 
 * [#11968](https://github.com/netbox-community/netbox/issues/11968) - Add navigation menu buttons to create device & VM components
 * [#12068](https://github.com/netbox-community/netbox/issues/12068) - Enable generic foreign key relationships from jobs to NetBox objects
 * [#12085](https://github.com/netbox-community/netbox/issues/12085) - Add a file source view for reports
+* [#12218](https://github.com/netbox-community/netbox/issues/12218) - Provide more relevant API endpoint descriptions in schema
+* [#12343](https://github.com/netbox-community/netbox/issues/12343) - Enforce a minimum length for `SECRET_KEY` configuration parameter
 
-### Bug Fixes (From Beta1)
+### Bug Fixes (From Beta2)
 
-* [#12103](https://github.com/netbox-community/netbox/issues/12103) - Limit the types of objects available for object count & list widgets
-* [#12105](https://github.com/netbox-community/netbox/issues/12105) - Prevent data sources from becoming stuck in "syncing" status when an exception is raised
-* [#12106](https://github.com/netbox-community/netbox/issues/12106) - Fix exception when saving dashboard widget with minimum width/height
-* [#12108](https://github.com/netbox-community/netbox/issues/12108) - Limit the draggable area of widgets to their headers
-* [#12109](https://github.com/netbox-community/netbox/issues/12109) - Fix migration error when replicating more than 100 job results
-* [#12112](https://github.com/netbox-community/netbox/issues/12112) - Do not link data source URL for local paths
-* [#12115](https://github.com/netbox-community/netbox/issues/12115) - Fix rendering config templates from a data file
-* [#12144](https://github.com/netbox-community/netbox/issues/12144) - Ensure consistent treatment of context data when rendering config templates via UI & API
-* [#12145](https://github.com/netbox-community/netbox/issues/12145) - Employ `HTMXSelect` widget to fix inclusion of `<select>` field values during form regeneration
-* [#12146](https://github.com/netbox-community/netbox/issues/12146) - Do not display object selector for disabled fields
-* [#12151](https://github.com/netbox-community/netbox/issues/12151) - Remove incorrect OpenAPI string mapping for choice fields
-* [#12167](https://github.com/netbox-community/netbox/issues/12167) - Catch and report on exceptions raised when rendering a config template
+* [#12149](https://github.com/netbox-community/netbox/issues/12149) - Fix OpenAPI schema warnings relating to enum collisions
+* [#12195](https://github.com/netbox-community/netbox/issues/12195) - Fix exception when setting IP address role to null via REST API
+* [#12256](https://github.com/netbox-community/netbox/issues/12256) - Fix OpenAPI schema warnings relating to nested serializers
+* [#12278](https://github.com/netbox-community/netbox/issues/12278) - Fix schema warnings related to IPAddressField
+* [#12288](https://github.com/netbox-community/netbox/issues/12288) - Include `servers` definition in OpenAPI spec
+* [#12299](https://github.com/netbox-community/netbox/issues/12299) - Fix object list widget support for filtering by multiple values
 
 ### Other Changes
 

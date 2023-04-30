@@ -347,7 +347,7 @@ class PlatformImportForm(NetBoxModelImportForm):
     class Meta:
         model = Platform
         fields = (
-            'name', 'slug', 'manufacturer', 'config_template', 'description', 'tags',
+            'name', 'slug', 'manufacturer', 'config_template', 'napalm_driver', 'napalm_args', 'description', 'tags',
         )
 
 
@@ -947,7 +947,7 @@ class InventoryItemImportForm(NetBoxModelImportForm):
         component_name = self.cleaned_data.get('component_name')
         device = self.cleaned_data.get("device")
 
-        if not device and hasattr(self, 'instance'):
+        if not device and hasattr(self, 'instance') and hasattr(self.instance, 'device'):
             device = self.instance.device
 
         if not all([device, content_type, component_name]):

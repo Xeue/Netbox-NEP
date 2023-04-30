@@ -16,7 +16,7 @@ from utilities.forms.fields import (
     CommentField, ContentTypeChoiceField, DynamicModelChoiceField, DynamicModelMultipleChoiceField, JSONField,
     NumericArrayField, SlugField,
 )
-from utilities.forms.widgets import APISelect, ClearableFileInput, HTMXSelect, SelectSpeedWidget, SelectWithPK
+from utilities.forms.widgets import APISelect, ClearableFileInput, HTMXSelect, NumberWithOptions, SelectWithPK
 from virtualization.models import Cluster
 from wireless.models import WirelessLAN, WirelessLANGroup
 from .common import InterfaceCommonForm, ModuleCommonForm
@@ -361,15 +361,18 @@ class PlatformForm(NetBoxModelForm):
 
     fieldsets = (
         ('Platform', (
-            'name', 'slug', 'manufacturer', 'config_template', 'description', 'tags',
+            'name', 'slug', 'manufacturer', 'config_template', 'napalm_driver', 'napalm_args', 'description', 'tags',
         )),
     )
 
     class Meta:
         model = Platform
         fields = [
-            'name', 'slug', 'manufacturer', 'config_template', 'description', 'tags',
+            'name', 'slug', 'manufacturer', 'config_template', 'napalm_driver', 'napalm_args', 'description', 'tags',
         ]
+        widgets = {
+            'napalm_args': forms.Textarea(),
+        }
 
 
 class DeviceForm(TenancyForm, NetBoxModelForm):
@@ -1136,7 +1139,9 @@ class InterfaceForm(InterfaceCommonForm, ModularDeviceComponentForm):
             'untagged_vlan', 'tagged_vlans', 'vrf', 'tags',
         ]
         widgets = {
-            'speed': SelectSpeedWidget(),
+            'speed': NumberWithOptions(
+                options=InterfaceSpeedChoices
+            ),
             'mode': HTMXSelect(),
         }
         labels = {

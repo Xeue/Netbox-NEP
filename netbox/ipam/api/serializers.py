@@ -14,6 +14,7 @@ from tenancy.api.nested_serializers import NestedTenantSerializer
 from utilities.api import get_serializer_for_model
 from virtualization.api.nested_serializers import NestedVirtualMachineSerializer
 from .nested_serializers import *
+from .field_serializers import IPAddressField
 
 
 #
@@ -398,7 +399,7 @@ class IPAddressSerializer(NetBoxModelSerializer):
     vrf = NestedVRFSerializer(required=False, allow_null=True)
     tenant = NestedTenantSerializer(required=False, allow_null=True)
     status = ChoiceField(choices=IPAddressStatusChoices, required=False)
-    role = ChoiceField(choices=IPAddressRoleChoices, allow_blank=True, required=False, allow_null=True)
+    role = ChoiceField(choices=IPAddressRoleChoices, allow_blank=True, required=False)
     assigned_object_type = ContentTypeField(
         queryset=ContentType.objects.filter(IPADDRESS_ASSIGNMENT_MODELS),
         required=False,

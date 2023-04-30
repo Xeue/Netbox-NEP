@@ -10,8 +10,10 @@ from drf_spectacular.plumbing import (
     ComponentRegistry,
     ResolvedComponent,
     build_basic_type,
+    build_choice_field,
     build_media_type_object,
     build_object_type,
+    get_doc,
     is_serializer,
 )
 from drf_spectacular.types import OpenApiTypes
@@ -38,7 +40,7 @@ class ChoiceFieldFix(OpenApiSerializerFieldExtension):
 
     def map_serializer_field(self, auto_schema, direction):
         if direction == 'request':
-            return build_basic_type(OpenApiTypes.STR)
+            return build_choice_field(self.target)
 
         elif direction == "response":
             return build_object_type(
@@ -150,8 +152,12 @@ class NetBoxAutoSchema(AutoSchema):
     def get_writable_class(self, serializer):
         properties = {}
         fields = {} if hasattr(serializer, 'child') else serializer.fields
+        remove_fields = []
 
         for child_name, child in fields.items():
+            # read_only fields don't need to be in writable (write only) serializers
+            if 'read_only' in dir(child) and child.read_only:
+                remove_fields.append(child_name)
             if isinstance(child, (ChoiceField, WritableNestedSerializer)):
                 properties[child_name] = None
             elif isinstance(child, ManyRelatedField) and isinstance(child.child_relation, SerializedPKRelatedField):
@@ -165,7 +171,12 @@ class NetBoxAutoSchema(AutoSchema):
             meta_class = getattr(type(serializer), 'Meta', None)
             if meta_class:
                 ref_name = 'Writable' + self.get_serializer_ref_name(serializer)
-                writable_meta = type('Meta', (meta_class,), {'ref_name': ref_name})
+                # remove read_only fields from write-only serializers
+                fields = list(meta_class.fields)
+                for field in remove_fields:
+                    fields.remove(field)
+                writable_meta = type('Meta', (meta_class,), {'ref_name': ref_name, 'fields': fields})
+
                 properties['Meta'] = writable_meta
 
             self.writable_serializers[type(serializer)] = type(writable_name, (type(serializer),), properties)
@@ -222,3 +233,31 @@ class NetBoxAutoSchema(AutoSchema):
         if request_body_required:
             request_body['required'] = request_body_required
         return request_body
+
+    def get_description(self):
+        """
+        Return a string description for the ViewSet.
+        """
+
+        # If a docstring is provided, use it.
+        if self.view.__doc__:
+            return get_doc(self.view.__class__)
+
+        # When the action method is decorated with @action, use the docstring of the method.
+        action_or_method = getattr(self.view, getattr(self.view, 'action', self.method.lower()), None)
+        if action_or_method and action_or_method.__doc__:
+            return get_doc(action_or_method)
+
+        # Else, generate a description from the class name.
+        return self._generate_description()
+
+    def _generate_description(self):
+        """
+        Generate a docstring for the method. It also takes into account whether the method is for list or detail.
+        """
+        model_name = self.view.queryset.model._meta.verbose_name
+
+        # Determine if the method is for list or detail.
+        if '{id}' in self.path:
+            return f"{self.method.capitalize()} a {model_name} object."
+        return f"{self.method.capitalize()} a list of {model_name} objects."

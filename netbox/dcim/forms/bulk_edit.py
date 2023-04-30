@@ -12,7 +12,7 @@ from netbox.forms import NetBoxModelBulkEditForm
 from tenancy.models import Tenant
 from utilities.forms import BulkEditForm, add_blank_choice, form_from_model
 from utilities.forms.fields import ColorField, CommentField, DynamicModelChoiceField, DynamicModelMultipleChoiceField
-from utilities.forms.widgets import BulkEditNullBooleanSelect, SelectSpeedWidget
+from utilities.forms.widgets import BulkEditNullBooleanSelect, NumberWithOptions
 
 __all__ = (
     'CableBulkEditForm',
@@ -470,6 +470,10 @@ class PlatformBulkEditForm(NetBoxModelBulkEditForm):
         queryset=Manufacturer.objects.all(),
         required=False
     )
+    napalm_driver = forms.CharField(
+        max_length=50,
+        required=False
+    )
     config_template = DynamicModelChoiceField(
         queryset=ConfigTemplate.objects.all(),
         required=False
@@ -481,9 +485,9 @@ class PlatformBulkEditForm(NetBoxModelBulkEditForm):
 
     model = Platform
     fieldsets = (
-        (None, ('manufacturer', 'config_template', 'description')),
+        (None, ('manufacturer', 'config_template', 'napalm_driver', 'description')),
     )
-    nullable_fields = ('manufacturer', 'config_template', 'description')
+    nullable_fields = ('manufacturer', 'config_template', 'napalm_driver', 'description')
 
 
 class DeviceBulkEditForm(NetBoxModelBulkEditForm):
@@ -1169,8 +1173,9 @@ class InterfaceBulkEditForm(
     )
     speed = forms.IntegerField(
         required=False,
-        widget=SelectSpeedWidget(),
-        label=_('Speed')
+        widget=NumberWithOptions(
+            options=InterfaceSpeedChoices
+        )
     )
     mgmt_only = forms.NullBooleanField(
         required=False,
@@ -1305,6 +1310,11 @@ class FrontPortBulkEditForm(
     form_from_model(FrontPort, ['label', 'type', 'color', 'mark_connected', 'description']),
     ComponentBulkEditForm
 ):
+    mark_connected = forms.NullBooleanField(
+        required=False,
+        widget=BulkEditNullBooleanSelect
+    )
+
     model = FrontPort
     fieldsets = (
         (None, ('module', 'type', 'label', 'color', 'description', 'mark_connected')),
@@ -1316,6 +1326,11 @@ class RearPortBulkEditForm(
     form_from_model(RearPort, ['label', 'type', 'color', 'mark_connected', 'description']),
     ComponentBulkEditForm
 ):
+    mark_connected = forms.NullBooleanField(
+        required=False,
+        widget=BulkEditNullBooleanSelect
+    )
+
     model = RearPort
     fieldsets = (
         (None, ('module', 'type', 'label', 'color', 'description', 'mark_connected')),
