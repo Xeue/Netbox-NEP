@@ -911,6 +911,9 @@ class Device(PrimaryModel, ConfigContextModel):
     @property
     def interfaces_count(self):
         return self.vc_interfaces().count()
+    
+    def my_interfaces_count(self):
+        return self.my_interfaces().count()
 
     def get_config_template(self):
         """
@@ -928,6 +931,10 @@ class Device(PrimaryModel, ConfigContextModel):
         If this Device is a VirtualChassis member, return the VC master. Otherwise, return None.
         """
         return self.virtual_chassis.master if self.virtual_chassis else None
+
+    def my_interfaces(self, if_master=True):
+        filter = Q(device=self)
+        return Interface.objects.filter(filter)
 
     def vc_interfaces(self, if_master=True):
         """
