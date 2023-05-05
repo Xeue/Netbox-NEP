@@ -17,7 +17,7 @@ const nbcm_views = {
     },
     '/dcim/devices/': {
         'Edit': ['edit/?return_url=$current_url$', 'mdi-pencil'],
-        'Layout': ['../../interface-connections/?device_id=$id$&export=switch-layout', 'mdi-grid-large'],
+        'Layout': ['../../interfaces/?device_id=$id$&export=interface-layouts', 'mdi-grid-large'],
         'Interfaces': ['interfaces/', 'mdi-ethernet'],
         'Connections': ['../../interface-connections/?device_id=$id$', 'mdi-link'],
         'Cables': ['../../cables/?device_id=$id$', 'mdi-ethernet-cable']
