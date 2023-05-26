@@ -141,4 +141,4 @@ class LocationTable(TenancyColumnsMixin, ContactsColumnMixin, NetBoxTable):
             'pk', 'id', 'name', 'site', 'status', 'tenant', 'tenant_group', 'rack_count', 'device_count', 'description',
             'slug', 'contacts', 'tags', 'actions', 'created', 'last_updated',
         )
-        default_columns = ('pk', 'name', 'site', 'status', 'tenant', 'rack_count', 'device_count', 'description')
+        default_columns = ('name', 'site', 'status', 'rack_count', 'device_count', 'description')

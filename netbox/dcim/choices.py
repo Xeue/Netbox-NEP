@@ -913,6 +913,46 @@ class InterfaceTypeChoices(ChoiceSet):
     TYPE_SUMMITSTACK256 = 'extreme-summitstack-256'
     TYPE_SUMMITSTACK512 = 'extreme-summitstack-512'
 
+    # Video
+    TYPE_SDIHD = 'sdi-1-5g'
+    TYPE_SDI3G = 'sdi-3g'
+    TYPE_SDI6G = 'sdi-6g'
+    TYPE_SDI12G = 'sdi-12g'
+    TYPE_PAL = 'bnc-pal'
+    TYPE_TRI = 'bnc-tri'
+    TYPE_BNC_MINI = 'bnc-mini'
+    TYPE_DIN_MINI = 'din-mini'
+    TYPE_HDMI = 'vid-hdmi'
+    TYPE_DVI_D = 'vid-dvi-d'
+    TYPE_DVI_I = 'vid-dvi-i'
+    TYPE_DVI_A = 'vid-dvi-a'
+    TYPE_VGA = 'vid-vga'
+
+    #Audio
+    TYPE_MADI = 'bnc-madi'
+    TYPE_MADI_MM = 'sfp-madi-mm'
+    TYPE_MADI_SM = 'sfp-madi-sm'
+    TYPE_AES_BNC = 'bnc-aes'
+    TYPE_XLR_F = 'xlr-f'
+    TYPE_XLR_F_AES = 'xlr-f-aes'
+    TYPE_XLR_M = 'xlr-m'
+    TYPE_XLR_M_AES = 'xlr-m-aes'
+    TYPE_RF_ANTENNA = 'rf-antenna-n'
+    TYPE_MIL26 = 'mil26'
+    TYPE_TRRS = 'jack-trrs'
+    TYPE_TRS = 'jack-trs'
+    TYPE_TS = 'jack-ts'
+    TYPE_TRS_8 = 'jack-trs-8'
+    TYPE_TS_8 = 'jack-ts-8'
+    TYPE_RCA = 'rca'
+
+    #Data
+    TYPE_D9 = 'dsub-9'
+    TYPE_D25 = 'dsub-25'
+    TYPE_D36 = 'dsub-36'
+    TYPE_RJ45 = 'data-rj45'
+    TYPE_RJ11 = 'data-rj11'
+
     # Other
     TYPE_OTHER = 'other'
 
@@ -1063,6 +1103,55 @@ class InterfaceTypeChoices(ChoiceSet):
             'Coaxial',
             (
                 (TYPE_DOCSIS, 'DOCSIS'),
+            )
+        ),
+        (
+            'Video',
+            (
+                (TYPE_SDIHD, 'SDI 1.5G'),
+                (TYPE_SDI3G, 'SDI 3G'),
+                (TYPE_SDI6G, 'SDI 6G'),
+                (TYPE_SDI12G, 'SDI 12G'),
+                (TYPE_PAL, 'PAL'),
+                (TYPE_TRI, 'Tri-level'),
+                (TYPE_BNC_MINI, 'Mini BNC'),
+                (TYPE_DIN_MINI, 'Mini DIN'),
+                (TYPE_HDMI, 'HDMI'),
+                (TYPE_DVI_D, 'DVI-D'),
+                (TYPE_DVI_I, 'DVI-I'),
+                (TYPE_DVI_A, 'DVI-A'),
+                (TYPE_VGA, 'VGA'),
+            )
+        ),
+        (
+            'Audio',
+            (
+                (TYPE_MADI, 'Madi BNC'),
+                (TYPE_MADI_MM, 'Madi Fibre Multimode'),
+                (TYPE_MADI_SM, 'Madi Fibre Singlemode'),
+                (TYPE_XLR_F, 'XLR Female'),
+                (TYPE_XLR_M, 'XLR Male'),
+                (TYPE_AES_BNC, 'AES BNC'),
+                (TYPE_XLR_F_AES, 'AES XLR Female'),
+                (TYPE_XLR_M_AES, 'AES XLR Male'),
+                (TYPE_RF_ANTENNA, 'N-type Coaxial'),
+                (TYPE_MIL26, 'mil26'),
+                (TYPE_TRRS, '1/4 Jack TRRS'),
+                (TYPE_TRS, '1/4 Jack TRS'),
+                (TYPE_TS, '1/4 Jack TS'),
+                (TYPE_TRS_8, '1/8 Jack TRS'),
+                (TYPE_TS_8, '1/8 Jack TS'),
+                (TYPE_RCA, 'RCA/Phono'),
+            )
+        ),
+        (
+            'Data',
+            (
+                (TYPE_D9, '9 pin dsub'),
+                (TYPE_D25, '25 pin dsub'),
+                (TYPE_D36, '36 pin dsub'),
+                (TYPE_RJ45, 'RJ 45'),
+                (TYPE_RJ11, 'RJ 11'),
             )
         ),
         (
@@ -1327,6 +1416,10 @@ class CableTypeChoices(ChoiceSet):
     TYPE_DAC_PASSIVE = 'dac-passive'
     TYPE_MRJ21_TRUNK = 'mrj21-trunk'
     TYPE_COAXIAL = 'coaxial'
+    TYPE_SDI1_5 = 'sdi-1-5'
+    TYPE_SDI3 = 'sdi-3'
+    TYPE_SDI6 = 'sdi-6'
+    TYPE_SDI12 = 'sdi-12'
     TYPE_MMF = 'mmf'
     TYPE_MMF_OM1 = 'mmf-om1'
     TYPE_MMF_OM2 = 'mmf-om2'
@@ -1354,6 +1447,10 @@ class CableTypeChoices(ChoiceSet):
                 (TYPE_DAC_PASSIVE, 'Direct Attach Copper (Passive)'),
                 (TYPE_MRJ21_TRUNK, 'MRJ21 Trunk'),
                 (TYPE_COAXIAL, 'Coaxial'),
+                (TYPE_SDI1_5, 'SDI 1.5G'),
+                (TYPE_SDI3, 'SDI 3G'),
+                (TYPE_SDI6, 'SDI 6G'),
+                (TYPE_SDI12, 'SDI 12G'),
             ),
         ),
         (
