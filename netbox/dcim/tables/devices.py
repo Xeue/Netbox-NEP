@@ -226,8 +226,7 @@ class DeviceTable(TenancyColumnsMixin, ContactsColumnMixin, NetBoxTable):
             'vc_priority', 'description', 'config_template', 'comments', 'contacts', 'tags', 'created', 'last_updated',
         )
         default_columns = (
-            'name', 'status', 'site', 'location', 'rack', 'device_role', 'manufacturer', 'device_type', 'tags',
-            'primary_ip',
+            'status', 'name', 'cl_Hot Link', 'primary_ip', 'site', 'location', 'rack', 'device_role', 'device_type', 'tags',
         )
 
 
@@ -758,7 +757,7 @@ class DeviceDeviceBayTable(DeviceBayTable):
         fields = (
             'pk', 'id', 'name', 'label', 'status', 'installed_device', 'description', 'tags', 'actions',
         )
-        default_columns = ('pk', 'name', 'label', 'status', 'installed_device', 'description')
+        default_columns = ('name', 'label', 'status', 'installed_device', 'cl_Device IP', 'description')
 
 
 class ModuleBayTable(DeviceComponentTable):

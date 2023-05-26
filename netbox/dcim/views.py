@@ -610,14 +610,14 @@ class RackElevationListView(generic.ObjectListView):
 
         # Ordering
         ORDERING_CHOICES = {
-            'name': 'Name (A-Z)',
-            '-name': 'Name (Z-A)',
             'facility_id': 'Facility ID (A-Z)',
             '-facility_id': 'Facility ID (Z-A)',
+            'name': 'Name (A-Z)',
+            '-name': 'Name (Z-A)',
         }
-        sort = request.GET.get('sort', 'name')
+        sort = request.GET.get('sort', 'facility_id')
         if sort not in ORDERING_CHOICES:
-            sort = 'name'
+            sort = 'facility_id'
         sort_field = sort.replace("name", "_name")  # Use natural ordering
         racks = racks.order_by(sort_field)
 

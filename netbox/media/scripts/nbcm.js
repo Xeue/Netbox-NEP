@@ -222,14 +222,14 @@ function nbcmShowbox(e) {
                     },
                     body: `{"status":"${status}"}`
                 }).then(response => {
-                    target.classList.remove('bg-purple','bg-cyan','bg-white','bg-red','bg-green','bg-blue','bg-indigo');
+                    target.classList.remove('bg-purple','bg-cyan','bg-white','bg-red','bg-green','bg-blue','bg-indigo','bg-yellow');
                     switch (status) {
                         case 'planned':
                             target.classList.add('bg-purple');
                             target.innerText = 'Planned';
                             break;
                         case 'prepped':
-                            target.classList.add('bg-indigo');
+                            target.classList.add('bg-yellow');
                             target.innerText = 'Prepped';
                             break;
                         case 'rigged':
@@ -261,9 +261,7 @@ function nbcmShowbox(e) {
     }
 }
 
-function nbcm_add_burgers() {
-    'use strict';
-
+function nbcm_page_load() {
     const css=[`
     .nbcm-box {
         white-space: nowrap;
@@ -454,7 +452,6 @@ function nbcm_add_burgers() {
         style.appendChild(document.createTextNode(css.join("\r\n")));
         head.appendChild(style);
     }
-
     const nbcmboxmenu = document.createElement("div");
     nbcmboxmenu.id = "nbcmboxmenu";
     nbcmboxmenu.className = "card nbcm-context-menu";
@@ -465,11 +462,6 @@ function nbcm_add_burgers() {
     nbcmboxmenu.addEventListener('mouseleave', function (e) {
         nbcmHideBox(e)
     }, false);
-
-    const classes = ['table']
-    let i, j, k;
-    const nbcm_views_keys = Object.keys(nbcm_views)
-
     const drops = document.getElementsByClassName('status_dropdown');
     drops.forEach(drop => {
         drop.addEventListener('mouseout', function (e) {
@@ -479,6 +471,12 @@ function nbcm_add_burgers() {
             nbcmHideBox(e);
         }, false);
     });
+}
+
+function nbcm_build_menu(type = "all") {
+    const classes = ['table']
+    let i, j, k;
+    const nbcm_views_keys = Object.keys(nbcm_views)
 
     for (k = 0; k < classes.length; k++) {
         const divs = document.getElementsByClassName(classes[k]);
@@ -487,8 +485,19 @@ function nbcm_add_burgers() {
         for (i = 0; i < divs.length; i++) {
             console.log(divs[i]);
             let links = [];
-            links = Array.prototype.concat.apply(links, divs[i].getElementsByTagName('a'));
-            links = Array.prototype.concat.apply(links, divs[i].getElementsByClassName('status_dropdown'));
+            switch (type) {
+                case "status":
+                    links = Array.prototype.concat.apply(links, divs[i].getElementsByClassName('status_dropdown'));
+                    break;
+                case "menus":
+                    links = Array.prototype.concat.apply(links, divs[i].getElementsByTagName('a'));
+                    break;
+                case "all":
+                default:
+                    links = Array.prototype.concat.apply(links, divs[i].getElementsByClassName('status_dropdown'));
+                    links = Array.prototype.concat.apply(links, divs[i].getElementsByTagName('a'));
+                    break;
+            }
             for (j = 0; j < links.length; j++) {
                 const link = links[j];
                 const uri = link.getAttribute("href");
@@ -534,6 +543,18 @@ function nbcm_add_burgers() {
     }
 }
 
+function nbcm_add_burgers() {
+    'use strict';
+    nbcm_page_load();
+    nbcm_build_menu("all");
+}
+
+function nbcm_add_status() {
+    'use strict';
+    nbcm_page_load();
+    nbcm_build_menu("status");
+}
+
 nbcm_add_burgers();
 
 // Repaint after the tables are updated (ex QuickSearch or nbr items per page change)
@@ -545,9 +566,9 @@ if (nbcm_targetNode) {
 }
 
 const nbcm_targetNodeHome = document.getElementById('dashboard');
-if (nbcm_targetNodeHome && false) {
+if (nbcm_targetNodeHome) {
     const nbcm_observerconfig = { childList: true, subtree: true };
-    const nbcm_observerHome = new MutationObserver(nbcm_add_burgers);
+    const nbcm_observerHome = new MutationObserver(nbcm_add_status);
     nbcm_observerHome.observe(nbcm_targetNodeHome, nbcm_observerconfig);
 }
 

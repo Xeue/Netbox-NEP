@@ -102,8 +102,8 @@ class RackTable(TenancyColumnsMixin, ContactsColumnMixin, NetBoxTable):
             'contacts', 'tags', 'created', 'last_updated',
         )
         default_columns = (
-            'pk', 'name', 'site', 'location', 'status', 'facility_id', 'tenant', 'role', 'u_height', 'device_count',
-            'get_utilization',
+            'name', 'site', 'location', 'status', 'facility_id', 'role', 'u_height', 'device_count',
+            'get_utilization', 'tags',
         )
 
 
