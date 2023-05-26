@@ -85,6 +85,12 @@ class CustomField(CloningMixin, ExportTemplatesMixin, ChangeLoggedModel):
                 message="Only alphanumeric characters and underscores are allowed.",
                 flags=re.IGNORECASE
             ),
+            RegexValidator(
+                regex=r'__',
+                message="Double underscores are not permitted in custom field names.",
+                flags=re.IGNORECASE,
+                inverse_match=True
+            ),
         )
     )
     label = models.CharField(
@@ -605,6 +611,19 @@ class CustomField(CloningMixin, ExportTemplatesMixin, ChangeLoggedModel):
                     raise ValidationError(
                         f"Invalid choice(s) ({', '.join(value)}). Available choices are: {', '.join(self.choices)}"
                     )
+
+            # Validate selected object
+            elif self.type == CustomFieldTypeChoices.TYPE_OBJECT:
+                if type(value) is not int:
+                    raise ValidationError(f"Value must be an object ID, not {type(value).__name__}")
+
+            # Validate selected objects
+            elif self.type == CustomFieldTypeChoices.TYPE_MULTIOBJECT:
+                if type(value) is not list:
+                    raise ValidationError(f"Value must be a list of object IDs, not {type(value).__name__}")
+                for id in value:
+                    if type(id) is not int:
+                        raise ValidationError(f"Found invalid object ID: {id}")
 
         elif self.required:
             raise ValidationError("Required field cannot be empty.")
