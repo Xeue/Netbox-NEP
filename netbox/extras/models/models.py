@@ -397,7 +397,7 @@ class ExportTemplate(SyncedDataMixin, CloningMixin, ExportTemplatesMixin, Change
         return response
 
 
-class SavedFilter(CloningMixin, ExportTemplatesMixin, ChangeLoggedModel):
+class SavedFilter(CloningMixin, ExportTemplatesMixin, ChangeLoggedModel, CustomLinksMixin):
     """
     A set of predefined keyword parameters that can be reused to filter for specific objects.
     """
