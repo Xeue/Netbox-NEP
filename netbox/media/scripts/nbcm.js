@@ -223,34 +223,35 @@ function nbcmShowbox(e) {
                     body: `{"status":"${status}"}`
                 }).then(response => {
                     target.classList.remove('bg-purple','bg-cyan','bg-white','bg-red','bg-green','bg-blue','bg-indigo','bg-yellow');
+                    const textCont = target.querySelector('.status_label')
                     switch (status) {
                         case 'planned':
                             target.classList.add('bg-purple');
-                            target.innerText = 'Planned';
+                            textCont.innerText = 'Planned';
                             break;
                         case 'prepped':
                             target.classList.add('bg-yellow');
-                            target.innerText = 'Prepped';
+                            textCont.innerText = 'Prepped';
                             break;
                         case 'rigged':
                             target.classList.add('bg-cyan');
-                            target.innerText = 'Rigged';
+                            textCont.innerText = 'Rigged';
                             break;
                         case 'configured':
                             target.classList.add('bg-blue');
-                            target.innerText = 'Configured';
+                            textCont.innerText = 'Configured';
                             break;
                         case 'online':
                             target.classList.add('bg-green');
-                            target.innerText = 'Online';
+                            textCont.innerText = 'Online';
                             break;
                         case 'offline':
                             target.classList.add('bg-red');
-                            target.innerText = 'Offline';
+                            textCont.innerText = 'Offline';
                             break;
                         case 'spare':
                             target.classList.add('bg-white');
-                            target.innerText = 'Spare';
+                            textCont.innerText = 'Spare';
                             break;
                         default:
                             break;
@@ -373,6 +374,10 @@ function nbcm_page_load() {
         vertical-align: baseline;
         border-radius: .375rem;
         background-color: rgb(33, 150, 243);
+    }
+
+    .controls a[href="#nocontrol"] {
+        display: none;
     }
 
     @media (max-width: 650px) {

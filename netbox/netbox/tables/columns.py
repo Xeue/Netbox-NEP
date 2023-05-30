@@ -340,7 +340,7 @@ class ChoiceFieldColumnStatus(tables.Column):
         except AttributeError:
             pk_id = 1
 
-        return mark_safe(f'<span class="status_dropdown badge bg-{bg_color}" href="/dcim/status/{pk_id}/">{value}</span>')
+        return mark_safe(f'<span class="status_dropdown badge bg-{bg_color}" href="/dcim/status/{pk_id}/"><span class="status_label">{value}</span></span>')
 
     def value(self, value):
         return value
