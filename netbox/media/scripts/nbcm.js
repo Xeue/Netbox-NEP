@@ -376,6 +376,17 @@ function nbcm_page_load() {
         background-color: rgb(33, 150, 243);
     }
 
+    [hx-get="/extras/saved-filters/"] > div.row,
+    [hx-get="/ipam/prefixes/?tag=quick-search"] > div.row,
+    [hx-get="/ipam/prefixes/?tag=quick-search"] .noprint,
+    [hx-get="/extras/saved-filters/"] .noprint {
+        display: none;
+    }
+
+    .card-header.text-center.text-light.bg-black.p-1 {
+        background-color: rgba(0, 112, 255, 0.13) !important;
+    }
+
     .controls a[href="#nocontrol"] {
         display: none;
     }
