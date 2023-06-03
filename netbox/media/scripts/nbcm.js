@@ -376,6 +376,7 @@ function nbcm_page_load() {
         background-color: rgb(33, 150, 243);
     }
 
+    [hx-get="/dcim/devices/?tag=switch&sort=name"] [hx-get="/dcim/devices/?tag=switch&sort=cl_First+Connection"],
     [hx-get="/extras/saved-filters/"] > div.row,
     [hx-get="/ipam/prefixes/?tag=quick-search"] > div.row,
     [hx-get="/ipam/prefixes/?tag=quick-search"] .noprint,
