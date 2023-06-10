@@ -119,6 +119,30 @@ tr:has(.form-check-input:checked) {
 	display: contents !important;
 }
 
+.dashboard-card thead {
+	position: sticky;
+	top: 0;
+	background-color: var(--bg-col);
+	z-index: 1;
+}
+
+.dashboard-title {
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+.dashboard-card .bg-secondary {
+	background-color: transparent !important;
+}
+
+.dashboard-card.ui-draggable-disabled {
+	.dashboard-edit,
+	.dashboard-close {
+		display: none;
+	}
+}
+
+
 @media (max-width: 650px) {
 	#nbcmbox {
 		font-size: 2rem;

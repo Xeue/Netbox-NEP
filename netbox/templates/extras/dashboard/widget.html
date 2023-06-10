@@ -1,7 +1,7 @@
 {% load dashboard %}
 
 <div
-    class="grid-stack-item"
+    class="grid-stack-item dashboard-card"
     gs-w="{{ widget.width }}"
     gs-h="{{ widget.height }}"
     gs-x="{{ widget.x }}"
@@ -9,8 +9,8 @@
     gs-id="{{ widget.id }}"
 >
   <div class="card grid-stack-item-content">
-    <div class="card-header text-center text-light bg-{% if widget.color %}{{ widget.color }}{% else %}secondary{% endif %} p-1">
-      <div class="float-start ps-1">
+    <div class="card-header text-center text-light bg-{% if widget.color %}{{ widget.color }}{% else %}secondary{% endif %} p-2">
+      <div class="dashboard-edit float-start ps-1">
         <a href="#"
           hx-get="{% url 'extras:dashboardwidget_config' id=widget.id %}"
           hx-target="#htmx-modal-content"
@@ -18,7 +18,7 @@
           data-bs-target="#htmx-modal"
         ><i class="mdi mdi-cog text-gray"></i></a>
       </div>
-      <div class="float-end pe-1">
+      <div class="dashboard-close float-end pe-1">
         <a href="#"
           hx-get="{% url 'extras:dashboardwidget_delete' id=widget.id %}"
           hx-target="#htmx-modal-content"
@@ -27,10 +27,10 @@
         ><i class="mdi mdi-close text-gray"></i></a>
       </div>
       {% if widget.title %}
-        <strong>{{ widget.title }}</strong>
+        <div class="dashboard-title">{{ widget.title }}</div>
       {% endif %}
     </div>
-    <div class="card-body p-2 overflow-auto">
+    <div class="card-body p-2 pt-0 overflow-auto">
       {% render_widget widget %}
     </div>
   </div>
