@@ -26,8 +26,8 @@ DEVICE_LINK = """
 
 DEVICEBAY_STATUS = """
 {% if record.installed_device_id %}
-    <span class="badge bg-{{ record.installed_device.get_status_color }}">
-        {{ record.installed_device.get_status_display }}
+    <span class="status_dropdown badge bg-{{ record.installed_device.get_status_color }}" href="/dcim/status/{{record.installed_device.id}}/">
+        <span class="status_label">{{ record.installed_device.get_status_display }}</span>
     </span>
 {% else %}
     <span class="badge bg-secondary">Vacant</span>

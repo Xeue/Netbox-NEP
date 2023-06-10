@@ -155,7 +155,7 @@ class DeviceTable(TenancyColumnsMixin, ContactsColumnMixin, NetBoxTable):
         template_code=DEVICE_LINK,
         linkify=True
     )
-    status = columns.ChoiceFieldColumn()
+    status = columns.ChoiceFieldColumnStatus()
     region = tables.Column(
         accessor=Accessor('site__region'),
         linkify=True
@@ -241,8 +241,7 @@ class DeviceTable(TenancyColumnsMixin, ContactsColumnMixin, NetBoxTable):
             'tags', 'created', 'last_updated',
         )
         default_columns = (
-            'pk', 'name', 'status', 'tenant', 'site', 'location', 'rack', 'device_role', 'manufacturer', 'device_type',
-            'primary_ip',
+            'status', 'name', 'cl_Hot Link', 'primary_ip', 'site', 'location', 'rack', 'device_role', 'device_type', 'tags',
         )
 
 
@@ -773,7 +772,7 @@ class DeviceDeviceBayTable(DeviceBayTable):
         fields = (
             'pk', 'id', 'name', 'label', 'status', 'installed_device', 'description', 'tags', 'actions',
         )
-        default_columns = ('pk', 'name', 'label', 'status', 'installed_device', 'description')
+        default_columns = ('name', 'label', 'status', 'installed_device', 'cl_Device IP', 'description')
 
 
 class ModuleBayTable(DeviceComponentTable):

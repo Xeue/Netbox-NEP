@@ -139,7 +139,7 @@ class SavedFilterTable(NetBoxTable):
             'created', 'last_updated', 'parameters'
         )
         default_columns = (
-            'pk', 'name', 'content_types', 'user', 'description', 'enabled', 'shared',
+            'pk', 'name', 'description', 'cl_Search',
         )
 
 

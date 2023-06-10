@@ -1,0 +1,190 @@
+.nbcm-box {
+	white-space: nowrap;
+	display: inline-flex;
+}
+.nbcm-icon {
+	padding:.1rem .1rem;
+	margin-left: .2rem;
+	white-space: nowrap;
+	opacity: 20%;
+}
+.nbcm-icon:hover {
+	opacity: 80%; 
+}
+.nbcm-context-menu {
+	position: absolute !important;
+	padding:2px;
+}
+.nbcm-menu {
+	margin: 0;
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	font-size: 16px;
+}
+.nbcm-menu > li {
+	padding: 0px 8px !important;
+	border: none !important;
+	font-size: 1em
+}
+.nbcm-menu > li > a {
+	text-decoration: unset;
+	padding: 5px 5px;
+	width: 100%;
+	display: flex;
+	transition: 0.5s linear;
+	-webkit-transition: 0.5s linear;
+	-moz-transition: 0.5s linear;
+	-ms-transition: 0.5s linear;
+	-o-transition: 0.5s linear;
+}
+.nbcm-menu > li > a > i {
+	padding-right: 10px;
+}
+.nbcm-menu > li.trash > a:hover {
+	color: red;
+}
+.status_dropdown #nbcmbox::before {
+	content: "";
+	position: absolute;
+	width: 100%;
+	top: 0;
+	height: 100%;
+	left: 0;
+}
+.status_dropdown {
+	position: relative;
+}
+.status_dropdown .nbcm-box {
+	width: 0;
+	height: 0.8em;
+	overflow: hidden;
+}
+
+.nbcm-api-li {
+	cursor: pointer;
+}
+.nbcm-api-li > * {
+	pointer-events: none;
+}
+
+.link-custom {
+	white-space: nowrap;
+}
+
+table .link-custom {
+	display: inline-block;
+	padding: .35em .65em;
+	font-size: .75rem;
+	font-weight: 700;
+	line-height: 1;
+	color: rgb(255, 255, 255);
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: .375rem;
+	background-color: rgb(33, 150, 243);
+}
+
+[hx-get="/dcim/devices/?tag=switch&sort=name"] [hx-get="/dcim/devices/?tag=switch&sort=cl_First+Connection"],
+[hx-get="/extras/saved-filters/"] > div.row,
+[hx-get="/ipam/prefixes/?tag=quick-search"] > div.row,
+[hx-get="/ipam/prefixes/?tag=quick-search"] .noprint,
+[hx-get="/extras/saved-filters/"] .noprint {
+	display: none;
+}
+
+.htmx-container .row {
+	display: none !important;
+}
+
+#dashboard .table.object-list {
+	margin-bottom: 0px !important;
+}
+
+.card-header.text-center.text-light.bg-black.p-1 {
+	background-color: rgba(0, 112, 255, 0.13) !important;
+}
+
+.controls a[href="#nocontrol"] {
+	display: none;
+}
+
+tr:has(.form-check-input:checked) {
+	background: rgba(0, 88, 255, 0.08);
+}
+
+.btn > .btn {
+	display: contents !important;
+}
+
+@media (max-width: 650px) {
+	#nbcmbox {
+		font-size: 2rem;
+	}
+}
+
+@media (min-width: 850px) {
+	.form.form-horizontal .noprint.bulk-buttons {
+		position: sticky;
+		bottom: 5px;
+		padding: 0px 4px;
+		width: max-content;
+	}
+	.form.form-horizontal .noprint.bulk-buttons .bulk-button-group{
+		background-color: var(--bg-col);
+		border: 1px solid var(--border-col);
+		border-radius: 10px;
+		padding: 2px;
+	}
+	.card #object_list .row {
+		justify-content: end;
+		position: sticky;
+		bottom: 5px;
+		padding: 0px 4px;
+	}
+	.card #object_list .row > * {
+		width: auto;
+		padding: 5px;
+		background-color: var(--bg-col);
+		border: 1px solid var(--border-col);
+	}
+	.card #object_list .row > :first-child {
+		border-right: none;
+		border-radius: 10px 0px 0px 10px;
+	}
+	.card #object_list .row > :last-child {
+		border-left: none;
+		border-radius: 0px 10px 10px 0px;
+		display: flex;
+		align-content: center;
+		align-items: center;
+		margin-left: -3px;
+		padding-left: 0;
+	}
+	.card #object_list .row > :last-child .dropdown.dropup {
+		padding-right: 10px;
+	}
+	#filters-form .card-footer {
+		position: sticky;
+		bottom: 0;
+		background: var(--bg-col);
+		border-top: var(--border-col) 1px solid !important;
+	}
+	[data-netbox-url-name=cable_add] .tab-content form > .row:last-child,
+	.form-object-edit .text-end {
+		position: sticky;
+		bottom: 10px;
+		width: fit-content;
+		float: right;
+		background: var(--bg-col);
+		border: 1px solid var(--border-col);
+		border-radius: 10px;
+		padding: 5px;
+		margin: 5px !important;
+	}
+	[data-netbox-url-name=cable_add] .tab-content form > .row:last-child > * {
+		padding: 0 !important;
+	}
+}

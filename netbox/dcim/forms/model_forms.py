@@ -1120,14 +1120,16 @@ class InterfaceForm(InterfaceCommonForm, ModularDeviceComponentForm):
 
     fieldsets = (
         ('Interface', ('device', 'module', 'name', 'label', 'type', 'speed', 'duplex', 'description', 'tags')),
-        ('Addressing', ('vrf', 'mac_address', 'wwn')),
-        ('Operation', ('vdcs', 'mtu', 'tx_power', 'enabled', 'mgmt_only', 'mark_connected')),
-        ('Related Interfaces', ('parent', 'bridge', 'lag')),
-        ('PoE', ('poe_mode', 'poe_type')),
-        ('802.1Q Switching', ('mode', 'vlan_group', 'untagged_vlan', 'tagged_vlans')),
-        ('Wireless', (
-            'rf_role', 'rf_channel', 'rf_channel_frequency', 'rf_channel_width', 'wireless_lan_group', 'wireless_lans',
-        )),
+        ('Port Mode', ('mode', 'vlan_group', 'untagged_vlan', 'tagged_vlans', 'lag', 'enabled', 'mgmt_only', 'mark_connected')),
+        #('Interface', ('device', 'module', 'name', 'label', 'type', 'speed', 'duplex', 'description', 'tags')),
+        #('Addressing', ('vrf', 'mac_address', 'wwn')),
+        #('Operation', ('vdcs', 'mtu', 'tx_power', 'enabled', 'mgmt_only', 'mark_connected')),
+        #('Related Interfaces', ('parent', 'bridge', 'lag')),
+        #('PoE', ('poe_mode', 'poe_type')),
+        #('Mode', ('mode', 'vlan_group', 'untagged_vlan', 'tagged_vlans')),
+        #('Wireless', (
+        #    'rf_role', 'rf_channel', 'rf_channel_frequency', 'rf_channel_width', 'wireless_lan_group', 'wireless_lans',
+        #)),
     )
 
     class Meta:

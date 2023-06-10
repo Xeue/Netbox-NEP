@@ -251,7 +251,7 @@ class PrefixTable(TenancyColumnsMixin, NetBoxTable):
             'created', 'last_updated',
         )
         default_columns = (
-            'pk', 'prefix', 'status', 'children', 'vrf', 'utilization', 'tenant', 'site', 'vlan', 'role', 'description',
+            'pk', 'description', 'prefix', 'utilization', 'vlan', 'cl_Show IPs',
         )
         row_attrs = {
             'class': lambda record: 'success' if not record.pk else '',
@@ -356,7 +356,7 @@ class IPAddressTable(TenancyColumnsMixin, NetBoxTable):
             'assigned', 'dns_name', 'description', 'comments', 'tags', 'created', 'last_updated',
         )
         default_columns = (
-            'pk', 'address', 'vrf', 'status', 'role', 'tenant', 'assigned', 'dns_name', 'description',
+            'pk', 'address', 'assigned_object_parent', 'status', 'description', 'assigned',
         )
         row_attrs = {
             'class': lambda record: 'success' if not isinstance(record, IPAddress) else '',

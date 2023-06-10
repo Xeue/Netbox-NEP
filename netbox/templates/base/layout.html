@@ -23,7 +23,7 @@ Blocks:
 
         {# NetBox Logo, only visible when printing #}
         <div class="p-2 printonly">
-          <img src="{% static 'netbox_logo.svg' %}" alt="NetBox logo" width="200px" />
+          <img src="{% static 'nep_logo.svg' %}" alt="NetBox logo" width="200px" />
         </div>
 
         {# Top bar #}
@@ -33,7 +33,8 @@ Blocks:
             <div class="nav-mobile">
               <div class="nav-mobile-top">
                 <a class="sidebar-logo p-2 d-block" href="{% url 'home' %}">
-                  <img src="{% static 'netbox_logo.svg' %}" alt="NetBox logo" height="40" />
+                  <img class="logo-light" src="{% static 'nep_logo.svg' %}" alt="NetBox logo" height="40" />
+                  <img class="logo-dark" src="{% static 'nep_logo_light.svg' %}" alt="NetBox logo" height="40" />
                 </a>
                 <button type="button" aria-label="Toggle Navigation" class="navbar-toggler sidenav-toggle-mobile">
                   <span class="navbar-toggler-icon"></span>
@@ -51,7 +52,7 @@ Blocks:
               <div class="col-3 d-flex flex-grow-1 ps-0"></div>
 
               {# Search bar #}
-              <div class="col-6 d-flex flex-grow-1 justify-content-center">
+              <div class="col-6 d-flex flex-grow-1 flex-column justify-content-center">
                 {% include 'inc/searchbar.html' %}
               </div>
 
@@ -119,6 +120,72 @@ Blocks:
 
         {# BS5 pop-up modals #}
         {% block modals %}{% endblock %}
+
+        <div class="modal fade" id="full-search" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+              {% load form_helpers %}
+              {% load helpers %}
+              <div class="modal-header bg-body">
+                <h1 class="modal-title h2" id="exampleModalToggleLabel">Advanced Search</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body card rounded-0 m-0 border-0">
+                <form id="search-advanced-form" action="." method="get">
+                  <div class="">
+                    <div class="overflow-visible d-flex flex-wrap justify-content-between py-3">
+                      {% for field in filter_form.hidden_fields %}
+                        {{ field }}
+                      {% endfor %}
+                      {# List filters by group #}
+                      {% for heading, fields in filter_form.fieldsets %}
+                        <div class="col col-12">
+                          {% if heading %}
+                            <h6>{{ heading }}</h6>
+                          {% endif %}
+                          {% for name in fields %}
+                            {% with field=filter_form|get_item:name %}
+                              {% render_field field %}
+                            {% endwith %}
+                          {% endfor %}
+                        </div>
+                        {% if not forloop.last %}
+                          <hr class="card-divider mt-0" />
+                        {% endif %}
+                      {% empty %}
+                        {# List all non-customfield filters as declared in the form class #}
+                        {% for field in filter_form.visible_fields %}
+                          {% if not filter_form.custom_fields or field.name not in filter_form.custom_fields %}
+                            <div class="col col-12">
+                              {% render_field field %}
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+                      {% endfor %}
+                      {% if filter_form.custom_fields %}
+                        {# List all custom field filters #}
+                        <hr class="card-divider mt-0" />
+                        {% for name in filter_form.custom_fields %}
+                          <div class="col col-12">
+                            {% with field=filter_form|get_item:name %}
+                              {% render_field field %}
+                            {% endwith %}
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer sticky-top bottom-0 bg-body">
+                <button id="search-advanced" type="button" class="btn btn-sm btn-primary m-1">
+                  <i class="mdi mdi-magnify"></i> Search
+                </button>
+                <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         {# Page footer #}
         <footer class="footer container-fluid">

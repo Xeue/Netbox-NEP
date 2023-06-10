@@ -1,6 +1,9 @@
 <form class="input-group" action="{% url 'search' %}" method="get">
   <input name="q" type="text" aria-label="Search" placeholder="Search" class="form-control" />
-  <button class="btn btn-primary" type="submit">
-    <i class="mdi mdi-magnify"></i>
+  <button class="btn btn-primary quickSearch" type="submit">
+    <i class="mdi mdi-magnify"></i>  Quick Search
+  </button>
+  <button class="btn btn-outline-primary fullSearch" type="button" data-bs-toggle="modal" data-bs-target="#full-search">
+    <i class="mdi mdi-menu"></i>  Show Full Search
   </button>
 </form>

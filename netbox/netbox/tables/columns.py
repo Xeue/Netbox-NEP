@@ -23,6 +23,7 @@ __all__ = (
     'ActionsColumn',
     'BooleanColumn',
     'ChoiceFieldColumn',
+    'ChoiceFieldColumnStatus',
     'ColorColumn',
     'ColoredLabelColumn',
     'ContentTypeColumn',
@@ -316,6 +317,34 @@ class ChoiceFieldColumn(tables.Column):
             bg_color = self.DEFAULT_BG_COLOR
 
         return mark_safe(f'<span class="badge bg-{bg_color}">{value}</span>')
+
+    def value(self, value):
+        return value
+
+
+class ChoiceFieldColumnStatus(tables.Column):
+    """
+    Render a model's static ChoiceField with its value from `get_FOO_display()` as a colored badge. Background color is
+    set by the instance's get_FOO_color() method, if defined.
+    """
+    DEFAULT_BG_COLOR = 'secondary'
+
+    def render(self, record, bound_column, value):
+        if value in self.empty_values:
+            return self.default
+
+        # Determine the background color to use (try calling object.get_FOO_color())
+        try:
+            bg_color = getattr(record, f'get_{bound_column.name}_color')() or self.DEFAULT_BG_COLOR
+        except AttributeError:
+            bg_color = self.DEFAULT_BG_COLOR
+
+        try:
+            pk_id = getattr(record, 'pk', None)
+        except AttributeError:
+            pk_id = 1
+
+        return mark_safe(f'<span class="status_dropdown badge bg-{bg_color}" href="/dcim/status/{pk_id}/"><span class="status_label">{value}</span></span>')
 
     def value(self, value):
         return value

@@ -182,8 +182,8 @@ class SavedFilterMixin:
         """
         queryset = SavedFilter.objects.all()
         user = request.user
-        if user.is_superuser:
-            return queryset
+        #if user.is_superuser:
+            #return queryset
         if user.is_anonymous:
             return queryset.filter(shared=True)
         return queryset.filter(

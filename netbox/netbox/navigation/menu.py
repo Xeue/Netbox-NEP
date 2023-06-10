@@ -33,22 +33,22 @@ ORGANIZATION_MENU = Menu(
                 ),
             ),
         ),
-        MenuGroup(
-            label=_('Tenancy'),
-            items=(
-                get_model_item('tenancy', 'tenant', _('Tenants')),
-                get_model_item('tenancy', 'tenantgroup', _('Tenant Groups')),
-            ),
-        ),
-        MenuGroup(
-            label=_('Contacts'),
-            items=(
-                get_model_item('tenancy', 'contact', _('Contacts')),
-                get_model_item('tenancy', 'contactgroup', _('Contact Groups')),
-                get_model_item('tenancy', 'contactrole', _('Contact Roles')),
-                get_model_item('tenancy', 'contactassignment', _('Contact Assignments'), actions=[]),
-            ),
-        ),
+        #MenuGroup(
+        #    label=_('Tenancy'),
+        #    items=(
+        #        get_model_item('tenancy', 'tenant', _('Tenants')),
+        #        get_model_item('tenancy', 'tenantgroup', _('Tenant Groups')),
+        #    ),
+        #),
+        #MenuGroup(
+        #    label=_('Contacts'),
+        #    items=(
+        #        get_model_item('tenancy', 'contact', _('Contacts')),
+        #        get_model_item('tenancy', 'contactgroup', _('Contact Groups')),
+        #        get_model_item('tenancy', 'contactrole', _('Contact Roles')),
+        #        get_model_item('tenancy', 'contactassignment', _('Contact Assignments'), actions=[]),
+        #    ),
+        #),
     ),
 )
 
@@ -155,20 +155,20 @@ IPAM_MENU = Menu(
                 get_model_item('ipam', 'role', _('Prefix & VLAN Roles')),
             ),
         ),
-        MenuGroup(
-            label=_('ASNs'),
-            items=(
-                get_model_item('ipam', 'asnrange', _('ASN Ranges')),
-                get_model_item('ipam', 'asn', _('ASNs')),
-            ),
-        ),
-        MenuGroup(
-            label=_('Aggregates'),
-            items=(
-                get_model_item('ipam', 'aggregate', _('Aggregates')),
-                get_model_item('ipam', 'rir', _('RIRs')),
-            ),
-        ),
+        #MenuGroup(
+        #    label=_('ASNs'),
+        #    items=(
+        #        get_model_item('ipam', 'asnrange', _('ASN Ranges')),
+        #        get_model_item('ipam', 'asn', _('ASNs')),
+        #    ),
+        #),
+        #MenuGroup(
+        #    label=_('Aggregates'),
+        #    items=(
+        #        get_model_item('ipam', 'aggregate', _('Aggregates')),
+        #        get_model_item('ipam', 'rir', _('RIRs')),
+        #    ),
+        #),
         MenuGroup(
             label=_('VRFs'),
             items=(
@@ -183,14 +183,14 @@ IPAM_MENU = Menu(
                 get_model_item('ipam', 'vlangroup', _('VLAN Groups')),
             ),
         ),
-        MenuGroup(
-            label=_('Other'),
-            items=(
-                get_model_item('ipam', 'fhrpgroup', _('FHRP Groups')),
-                get_model_item('ipam', 'servicetemplate', _('Service Templates')),
-                get_model_item('ipam', 'service', _('Services')),
-            ),
-        ),
+        #MenuGroup(
+        #    label=_('Other'),
+        #    items=(
+        #        get_model_item('ipam', 'fhrpgroup', _('FHRP Groups')),
+        #        get_model_item('ipam', 'servicetemplate', _('Service Templates')),
+        #        get_model_item('ipam', 'service', _('Services')),
+        #    ),
+        #),
     ),
 )
 
@@ -349,12 +349,12 @@ MENUS = [
     ORGANIZATION_MENU,
     DEVICES_MENU,
     CONNECTIONS_MENU,
-    WIRELESS_MENU,
+    #WIRELESS_MENU,
     IPAM_MENU,
-    OVERLAY_MENU,
-    VIRTUALIZATION_MENU,
-    CIRCUITS_MENU,
-    POWER_MENU,
+    #OVERLAY_MENU,
+    #VIRTUALIZATION_MENU,
+    #CIRCUITS_MENU,
+    #POWER_MENU,
     PROVISIONING_MENU,
     CUSTOMIZATION_MENU,
     OPERATIONS_MENU,

@@ -281,16 +281,17 @@ class CustomLink(CloningMixin, ExportTemplatesMixin, ChangeLoggedModel):
         link_target = ' target="_blank"' if self.new_window else ''
 
         # Sanitize link text
-        allowed_schemes = get_config().ALLOWED_URL_SCHEMES
-        text = clean_html(text, allowed_schemes)
+        #allowed_schemes = get_config().ALLOWED_URL_SCHEMES
+        #text = clean_html(text, allowed_schemes)
 
         # Sanitize link
-        link = urllib.parse.quote_plus(link, safe='/:?&=%+[]@#')
+        #link = urllib.parse.quote_plus(link, safe='/:?&=%+[]@#')
+        #link = urllib.parse.quote_plus(link, safe='/:?&')
 
         # Verify link scheme is allowed
-        result = urllib.parse.urlparse(link)
-        if result.scheme and result.scheme not in allowed_schemes:
-            link = ""
+        #result = urllib.parse.urlparse(link)
+        #if result.scheme and result.scheme not in allowed_schemes:
+        #    link = ""
 
         return {
             'text': text,
@@ -396,7 +397,7 @@ class ExportTemplate(SyncedDataMixin, CloningMixin, ExportTemplatesMixin, Change
         return response
 
 
-class SavedFilter(CloningMixin, ExportTemplatesMixin, ChangeLoggedModel):
+class SavedFilter(CloningMixin, ExportTemplatesMixin, ChangeLoggedModel, CustomLinksMixin):
     """
     A set of predefined keyword parameters that can be reused to filter for specific objects.
     """

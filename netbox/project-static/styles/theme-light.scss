@@ -65,3 +65,16 @@ $form-select-disabled-color: $gray-600;
 
 // Tabbed content
 $tab-content-bg: $gray-100;
+
+.logo-dark {
+	display: none;
+}
+
+.logo-light {
+	display: block;
+}
+
+.layout {
+	--bg-col: rgb(233, 236, 239);
+	--border-col: rgb(223, 223, 223)
+}

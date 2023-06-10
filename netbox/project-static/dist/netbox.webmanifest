@@ -1,0 +1,30 @@
+{
+	"background_color": "rgb(23, 27, 29)",
+	"description": "NEP's Version of netbox - for network and device management and source of truth",
+	"dir": "ltr",
+	"display": "standalone",
+	"name": "NEP Netbox",
+	"orientation": "portrait",
+	"scope": "/",
+	"short_name": "Netbox",
+	"start_url": "/",
+	"theme_color": "rgb(23, 27, 29)",
+	"categories": [
+	  "productivity"
+	],
+	"screenshots": [],
+	"icons": [
+	  {
+		"src": "/static/netbox.ico",
+		"type": "image/png",
+		"sizes": "64x64"
+	  },
+	  {
+		"src": "/static/netbox_touch-icon-180.png",
+		"type": "image/png",
+		"sizes": "180x180"
+	  }
+	],
+	"shortcuts": [],
+	"lang": "en"
+  }
