@@ -289,3 +289,16 @@ $pre-color: null;
 
 // Tabbed content
 $tab-content-bg: $darkest;
+
+.logo-dark {
+	display: block;
+}
+
+.logo-light {
+	display: none;
+}
+
+.layout {
+	--bg-col: rgb(33, 37, 41);
+	--border-col: rgb(53, 58, 64)
+}

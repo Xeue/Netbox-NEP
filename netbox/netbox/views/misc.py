@@ -16,6 +16,7 @@ from netbox.search.backends import search_backend
 from netbox.tables import SearchTable
 from utilities.htmx import is_htmx
 from utilities.paginator import EnhancedPaginator, get_paginate_count
+from dcim.forms.filtersets import GenericFilterForm
 
 __all__ = (
     'HomeView',
@@ -50,6 +51,7 @@ class HomeView(View):
         return render(request, self.template_name, {
             'dashboard': dashboard,
             'new_release': new_release,
+            'filter_form': GenericFilterForm
         })
 
 

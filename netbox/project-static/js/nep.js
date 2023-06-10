@@ -384,6 +384,14 @@ function nbcm_page_load() {
         display: none;
     }
 
+    .htmx-container .row {
+        display: none !important;
+    }
+
+    #dashboard .table.object-list {
+        margin-bottom: 0px !important;
+    }
+
     .card-header.text-center.text-light.bg-black.p-1 {
         background-color: rgba(0, 112, 255, 0.13) !important;
     }
@@ -497,10 +505,7 @@ function nbcm_build_menu(type = "all") {
 
     for (k = 0; k < classes.length; k++) {
         const divs = document.getElementsByClassName(classes[k]);
-        console.log(classes[k]);
-        console.log(divs);
         for (i = 0; i < divs.length; i++) {
-            console.log(divs[i]);
             let links = [];
             switch (type) {
                 case "status":
@@ -572,26 +577,50 @@ function nbcm_add_status() {
     nbcm_build_menu("status");
 }
 
-nbcm_add_burgers();
 
-// Repaint after the tables are updated (ex QuickSearch or nbr items per page change)
-const nbcm_targetNode = document.getElementById('object_list');
-if (nbcm_targetNode) {
-    const nbcm_observerconfig = { childList: true, subtree: true };
-    const nbcm_observer = new MutationObserver(nbcm_add_burgers);
-    nbcm_observer.observe(nbcm_targetNode, nbcm_observerconfig);
-}
+window.addEventListener("load", event => {
 
-const nbcm_targetNodeHome = document.getElementById('dashboard');
-if (nbcm_targetNodeHome) {
-    const nbcm_observerconfig = { childList: true, subtree: true };
-    const nbcm_observerHome = new MutationObserver(nbcm_add_status);
-    nbcm_observerHome.observe(nbcm_targetNodeHome, nbcm_observerconfig);
-}
-
-document.addEventListener("click", e => {
-    if (e.target.tagName == 'TR' || e.target.parentElement.tagName == 'TR') {
-        const tr = e.target.tagName == 'TR' ? e.target : e.target.parentElement;
-        tr.getElementsByClassName('form-check-input')[0].click();
+    if (location.pathname == '/') {
+        nbcm_add_status();
+    } else {
+        nbcm_add_burgers();
     }
+    
+    const nbcm_targetNode = document.getElementById('object_list');
+    if (nbcm_targetNode) {
+        const nbcm_observerconfig = { childList: true, subtree: true };
+        const nbcm_observer = new MutationObserver(nbcm_add_burgers);
+        nbcm_observer.observe(nbcm_targetNode, nbcm_observerconfig);
+    }
+    
+    const nbcm_targetNodeHome = document.getElementById('dashboard');
+    if (nbcm_targetNodeHome) {
+        const nbcm_observerconfig = { childList: true, subtree: true };
+        const nbcm_observerHome = new MutationObserver(nbcm_add_status);
+        nbcm_observerHome.observe(nbcm_targetNodeHome, nbcm_observerconfig);
+    }
+    
+    document.addEventListener("click", e => {
+        if (e.target.tagName == 'TR' || e.target.parentElement?.tagName == 'TR') {
+            const tr = e.target.tagName == 'TR' ? e.target : e.target.parentElement;
+            tr.getElementsByClassName('form-check-input')[0].click();
+        } else if (e.target.id == 'search-advanced') {
+            const form = document.getElementById('search-advanced-form');
+            const formData = new FormData(form);
+            const params = new URLSearchParams(formData.entries());
+            const sel = document.getElementById('id_content_types');
+            if (sel == null) {
+                path = location.pathname;
+            } else {
+                const type = document.querySelector(`#id_content_types [value="${sel.value}"]`).text;
+                if (type == "---------") {
+                    path = '/dcim/devices/';
+                } else {
+                    const [prefix, sufix] = type.split(' > ');
+                    path = `/${prefix.toLowerCase()}/${sufix.toLowerCase().replace(' ', '-')}s/`;
+                }
+            }
+            location.href = path+"?"+params.toString();
+        }
+    });
 });

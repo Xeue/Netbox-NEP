@@ -2,9 +2,11 @@
 
 html[data-netbox-color-mode='dark'] {
   // Imports are scoped under the body when its data-netbox-color-mode attribute is set to 'dark'.
+  color-scheme: dark;
   @import './theme-dark.scss';
   @import './bootstrap.scss';
   @import './select.scss';
   @import './flatpickr-dark.scss';
   @import './netbox.scss';
+  @import './nep.scss';
 }

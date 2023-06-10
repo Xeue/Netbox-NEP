@@ -73,6 +73,12 @@
 
     {# Additional <head> content #}
     {% block head %}{% endblock %}
+
+    <script
+      type="text/javascript"
+      src="{% static 'nep.js' %}"
+      onerror="window.location='{% url 'media_failure' %}?filename=nep.js'">
+    </script>
   </head>
 
   <body>
