@@ -306,7 +306,7 @@ class VMInterfaceForm(InterfaceCommonForm, NetBoxModelForm):
         ('Addressing', ('vrf', 'mac_address')),
         ('Operation', ('mtu', 'enabled')),
         ('Related Interfaces', ('parent', 'bridge')),
-        ('802.1Q Switching', ('mode', 'vlan_group', 'untagged_vlan', 'tagged_vlans')),
+        ('Port Mode', ('mode', 'vlan_group', 'untagged_vlan', 'tagged_vlans')),
     )
 
     class Meta:
@@ -316,7 +316,7 @@ class VMInterfaceForm(InterfaceCommonForm, NetBoxModelForm):
             'vlan_group', 'untagged_vlan', 'tagged_vlans', 'vrf', 'tags',
         ]
         labels = {
-            'mode': '802.1Q Mode',
+            'mode': 'Port Mode',
         }
         widgets = {
             'mode': HTMXSelect(),

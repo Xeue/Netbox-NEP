@@ -236,7 +236,7 @@ class VMInterfaceBulkEditForm(NetBoxModelBulkEditForm):
     fieldsets = (
         (None, ('mtu', 'enabled', 'vrf', 'description')),
         ('Related Interfaces', ('parent', 'bridge')),
-        ('802.1Q Switching', ('mode', 'vlan_group', 'untagged_vlan', 'tagged_vlans')),
+        ('Port Mode', ('mode', 'vlan_group', 'untagged_vlan', 'tagged_vlans')),
     )
     nullable_fields = (
         'parent', 'bridge', 'mtu', 'vrf', 'description',

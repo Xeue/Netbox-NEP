@@ -14,6 +14,7 @@
 .nbcm-context-menu {
 	position: absolute !important;
 	padding:2px;
+	z-index: 1;
 }
 .nbcm-menu {
 	margin: 0;
@@ -45,6 +46,16 @@
 .nbcm-menu > li.trash > a:hover {
 	color: red;
 }
+.multi_dropdown > .nbcm-box,
+.boolean_dropdown > .nbcm-box {
+	opacity: 0;
+}
+.boolean_dropdown {
+	color: transparent !important;
+	font-size: 0;
+}
+.multi_dropdown #nbcmbox::before,
+.boolean_dropdown #nbcmbox::before,
 .status_dropdown #nbcmbox::before {
 	content: "";
 	position: absolute;
@@ -53,6 +64,8 @@
 	height: 100%;
 	left: 0;
 }
+.multi_dropdown,
+.boolean_dropdown,
 .status_dropdown {
 	position: relative;
 }
@@ -95,7 +108,7 @@ table .link-custom {
 	display: none;
 }
 
-.htmx-container .row {
+.dashboard-card .htmx-container .row {
 	display: none !important;
 }
 

@@ -1147,7 +1147,7 @@ class InterfaceForm(InterfaceCommonForm, ModularDeviceComponentForm):
             'mode': HTMXSelect(),
         }
         labels = {
-            'mode': '802.1Q Mode',
+            'mode': 'Port Mode',
         }
 
 

@@ -1,6 +1,5 @@
 const nbcm_views_all = {
     'post': {
-        'To Clipboard': ['#copy', 'mdi-content-copy']
     },
 }
 const nbcm_views = {
@@ -25,11 +24,23 @@ const nbcm_views = {
     '/dcim/status/': {
         'Planned': ['/api/dcim/devices/$id$/val=planned', 'mdi-lightbulb-on-10'],
         'Prepped': ['/api/dcim/devices/$id$/val=prepped', 'mdi-screwdriver'],
-        'Rigged': ['/api/dcim/devices/$id$/val=rigged', 'mdi-cable-data'],
         'Configured': ['/api/dcim/devices/$id$/val=configured', 'mdi-cog-outline'],
+        'Rigged': ['/api/dcim/devices/$id$/val=rigged', 'mdi-cable-data'],
         'Online': ['/api/dcim/devices/$id$/val=online', 'mdi-access-point'],
         'Offline': ['/api/dcim/devices/$id$/val=offline', 'mdi-access-point-off'],
-        'Spare': ['/api/dcim/devices/$id$/val=spare', 'mdi-table']
+        'Spare': ['/api/dcim/devices/$id$/val=spare', 'mdi-table'],
+        'Show Device': ['/dcim/devices/$id$/', 'mdi-open-in-new']
+    },
+    '/nepapi/boolean/': {
+        'True': ['/api/dcim/devices/$id$/val=true', 'mdi-check-bold'],
+        'False': ['/api/dcim/devices/$id$/val=false', 'mdi-cancel']
+    },
+    '/nepapi/ref/': {
+        'PTP': ['/api/dcim/devices/$id$/val=PTP', 'mdi-clock-digital'],
+        'B&B': ['/api/dcim/devices/$id$/val=B&B', 'mdi-ethernet-cable'],
+        'Tri-Level': ['/api/dcim/devices/$id$/val=Tri-Level', 'mdi-ethernet-cable'],
+        'CP': ['/api/dcim/devices/$id$/val=CP', 'mdi-check-bold'],
+        'None': ['/api/dcim/devices/$id$/val=None', 'mdi-cancel']
     },
     '/dcim/front-ports/': {
     },
@@ -97,131 +108,145 @@ const nbcm_views = {
 
 function nbcmHideBox() {
     document.getElementById("nbcmboxmenu").style.display = "none";
-    let boxes = document.getElementsByClassName("nbcm-open");
-    boxes.forEach(box => {
-        box.classList.remove('nbcm-open');
-    });
+    const boxes = document.getElementsByClassName("nbcm-open");
+    for (let index = 0; index < boxes.length; index++) {
+        const box = boxes[index];
+        box.classList.remove('nbcm-open');   
+    }
 }
 
 function nbcmShowbox(e) {
     e.preventDefault();
 
     const nbcmboxmenu = document.getElementById("nbcmboxmenu");
-    if (nbcmboxmenu) {
-        const current_url = window.location.pathname + window.location.search + window.location.hash
-        if (e.currentTarget.classList.contains('status_dropdown')) {
-            target = e.currentTarget.getElementsByClassName('nbcm-box')[0];
-        } else {
-            target = e.currentTarget;
-        }
-        target.classList.add('nbcm-open');
-        const url = new URL(target.url)
-        const nbcmboxpos = target.getBoundingClientRect();
-        const urlpath = url.pathname;
-        const parts = urlpath.split('/');
-        const id = parts[3];
-        //var objtext = e.relatedTarget.innerText;
-        let objtext = document.getElementsByClassName('nbcm-open')[0].parentElement.innerText;
-        const nbcmmenu = nbcmboxmenu.getElementsByClassName('nbcm-menu')[0]
-        let urltarget = ''
-        nbcmmenu.innerHTML = '';
-        for (const view of Object.keys(nbcm_views)) {
-            if (urlpath.startsWith(view)) {
-                const nbcm_view_full= {
-                    ...nbcm_views_all['pre'],
-                    ...nbcm_views[view],
-                    ...nbcm_views_all['post'],
+    if (!nbcmboxmenu) return;
+
+    const current_url = window.location.pathname + window.location.search + window.location.hash
+    if (
+        e.currentTarget.classList.contains('status_dropdown')
+        || e.currentTarget.classList.contains('boolean_dropdown')
+        || e.currentTarget.classList.contains('multi_dropdown')
+    ) {
+        target = e.currentTarget.getElementsByClassName('nbcm-box')[0];
+    } else {
+        target = e.currentTarget;
+    }
+    
+    target.classList.add('nbcm-open');
+    const url = new URL(target.url)
+    const nbcmboxpos = target.getBoundingClientRect();
+    const urlpath = url.pathname;
+    const parts = urlpath.split('/');
+    const id = parts[3];
+    let objtext = document.getElementsByClassName('nbcm-open')[0].parentElement.innerText;
+    const nbcmmenu = nbcmboxmenu.getElementsByClassName('nbcm-menu')[0]
+    let urltarget = ''
+    nbcmmenu.innerHTML = '';
+    for (const view of Object.keys(nbcm_views)) {
+        if (urlpath.startsWith(view)) {
+            for (const item of Object.keys(nbcm_views[view])) {
+                let newurl = new URL(url);
+                const viewitem = nbcm_views[view][item];
+                const uri = viewitem[0].split('?');
+                let displayitem = item;
+                let api = false;
+                if (viewitem.length>2) {
+                    urltarget = viewitem[2]
+                    displayitem = displayitem + ' <i class="mdi mdi-open-in-new" style="margin-left:0.2em"></i>'
+                }    
+                if (viewitem[0] == '#copy') {
+                    newurl='#" onclick="window.navigator.clipboard.writeText(\''+objtext.replace("'","\\'")+'\')'
+                } else if (viewitem[0].startsWith('/api')) {
+                    newurl.pathname = uri[0].replace('$id$', id).replace('$obj_ip$', objtext.split('/')[0]).replace('$obj$', objtext).replace('$current_url$',current_url);
+                    api = true;
+                } else if (viewitem[0].startsWith('/')) {
+                    newurl.pathname = uri[0].replace('$id$', id).replace('$obj_ip$', objtext.split('/')[0]).replace('$obj$', objtext).replace('$current_url$',current_url);
+                } else if (viewitem[0].includes('://')) {
+                    newurl = uri[0].replace('$id$', id).replace('$obj_ip$', objtext.split('/')[0]).replace('$obj$', objtext).replace('$current_url$',current_url);
+                } else {
+                    newurl.pathname += uri[0];
                 }
-                for (const item of Object.keys(nbcm_view_full)) {
-                    let newurl = new URL(url);
-                    const viewitem = nbcm_view_full[item];
-                    const uri = viewitem[0].split('?');
-                    let displayitem = item;
-                    let api = false;
-                    if (viewitem.length>2) {
-                        urltarget = viewitem[2]
-                        displayitem = displayitem + ' <i class="mdi mdi-open-in-new" style="margin-left:0.2em"></i>'
-                    }    
-                    if (viewitem[0] == '#copy') {
-                        newurl='#" onclick="window.navigator.clipboard.writeText(\''+objtext.replace("'","\\'")+'\')'
-                    } else if (viewitem[0].startsWith('/api')) {
-                        newurl.pathname = uri[0].replace('$id$', id).replace('$obj_ip$', objtext.split('/')[0]).replace('$obj$', objtext).replace('$current_url$',current_url);
-                        api = true;
-                    } else if (viewitem[0].startsWith('/')) {
-                        newurl.pathname = uri[0].replace('$id$', id).replace('$obj_ip$', objtext.split('/')[0]).replace('$obj$', objtext).replace('$current_url$',current_url);
-                    } else if (viewitem[0].includes('://')) {
-                        newurl = uri[0].replace('$id$', id).replace('$obj_ip$', objtext.split('/')[0]).replace('$obj$', objtext).replace('$current_url$',current_url);
-                    } else {
-                        newurl.pathname += uri[0];
+                if (uri.length>1) {
+                    for (let vars of uri[1].split('&')) {
+                        vars = vars.split(/=(.+)/)
+                        newurl.searchParams.set(vars[0], vars[1].replace('$id$', id).replace('$obj_ip$', objtext.split('/')[0]).replace('$obj$', objtext).replace('$current_url$',current_url));
                     }
-                    if (uri.length>1) {
-                        for (let vars of uri[1].split('&')) {
-                            vars = vars.split(/=(.+)/)
-                            newurl.searchParams.set(vars[0], vars[1].replace('$id$', id).replace('$obj_ip$', objtext.split('/')[0]).replace('$obj$', objtext).replace('$current_url$',current_url));
-                        }
-                    }
-                    if (api) {
-                        const api_li = document.createElement("li");
-                        const api_a = document.createElement("a");
-                        const api_i = document.createElement("i");
-                        const api_span = document.createElement("span");
-                        api_li.classList.add('list-group-item', 'list-group-item-action', 'nbcm-api-li');
-                        api_li.dataset.link = newurl;
-                        api_a.classList.add('nbcm-api');
-                        api_a.href = "#";
-                        api_i.classList.add('mdi', viewitem[1]);
-                        api_span.innerText = displayitem;
-                        api_li.append(api_a);
-                        api_a.append(api_i);
-                        api_a.append(api_span);
-                        //nbcmmenu.innerHTML = "";
-                        nbcmmenu.append(api_li);
-                    } else {
-                        const itemTxt = item == 'Delete' ? ' trash' : '';
-                        let targetTxt = ` target="${urltarget}"`;
-                        if (urltarget == '') targetTxt = ' target="_blank"';
-                        if (viewitem[0] == '#copy') targetTxt = ' target=""';
-                        nbcmmenu.innerHTML += `<li class="list-group-item list-group-item-action${itemTxt}"><a href="${newurl}"${targetTxt}><i class="mdi ${viewitem[1]}"></i> ${displayitem}</a></li>`;
-                    }
+                }
+                if (api) {
+                    const api_li = document.createElement("li");
+                    const api_a = document.createElement("a");
+                    const api_i = document.createElement("i");
+                    const api_span = document.createElement("span");
+                    api_li.classList.add('list-group-item', 'list-group-item-action', 'nbcm-api-li');
+                    api_li.dataset.link = newurl;
+                    api_li.dataset.field = target.parentElement.dataset.field;
+                    api_a.classList.add('nbcm-api');
+                    api_a.href = "#";
+                    api_i.classList.add('mdi', viewitem[1]);
+                    api_span.innerText = displayitem;
+                    api_li.append(api_a);
+                    api_a.append(api_i);
+                    api_a.append(api_span);
+                    nbcmmenu.append(api_li);
+                } else {
+                    const itemTxt = item == 'Delete' ? ' trash' : '';
+                    let targetTxt = ` target="${urltarget}"`;
+                    if (urltarget == '') targetTxt = ' target="_blank"';
+                    if (viewitem[0] == '#copy') targetTxt = ' target=""';
+                    nbcmmenu.innerHTML += `<li class="list-group-item list-group-item-action${itemTxt}"><a href="${newurl}"${targetTxt}><i class="mdi ${viewitem[1]}"></i> ${displayitem}</a></li>`;
                 }
             }
         }
-        nbcmboxmenu.style.display = "block";
+    }
+    nbcmboxmenu.style.display = "block";
 
-        const menuWidth = nbcmboxmenu.offsetWidth + 8;
-        const menuHeight = nbcmboxmenu.offsetHeight + 8;
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
+    const menuWidth = nbcmboxmenu.offsetWidth + 8;
+    const menuHeight = nbcmboxmenu.offsetHeight + 8;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
 
-        if ((windowWidth - nbcmboxpos.x) < menuWidth) {
-            nbcmboxmenu.style.left = windowWidth - menuWidth + (nbcmboxpos.width * -0.05) + "px";
-        } else {
-            nbcmboxmenu.style.left = nbcmboxpos.x + (nbcmboxpos.width * -0.05) + "px";
-        }
+    if ((windowWidth - nbcmboxpos.x) < menuWidth) {
+        nbcmboxmenu.style.left = windowWidth - menuWidth + (nbcmboxpos.width * -0.05) + "px";
+    } else {
+        nbcmboxmenu.style.left = nbcmboxpos.x + (nbcmboxpos.width * -0.05) + "px";
+    }
 
-        if ((windowHeight - nbcmboxpos.y) < menuHeight) {
-            nbcmboxmenu.style.top = windowHeight - menuHeight - 5 + "px";
-        } else {
-            nbcmboxmenu.style.top = nbcmboxpos.y - 5 + "px";
-        }
-        let apis = document.getElementsByClassName('nbcm-api-li');
-        apis.forEach(api => {
-            api.addEventListener('click', function(e) {
-                e.preventDefault;
-                const url = e.target.dataset.link;
-                const status = url.substring(url.indexOf("/val=")+5);
-                const uri = url.substring(url.indexOf("/val="), -5);
-                let target = document.getElementsByClassName("nbcm-open")[0].parentElement;
-                fetch(uri+'/', {
-                    credentials: "omit",
-                    method: 'PATCH',
-                    headers: {
-                      'Content-Type': 'application/json',
-                      'Authorization': 'Token 33cb389f41c7f8a4331c25947fd5966148cd56eb',
-                      'Accept': 'application/json'
-                    },
-                    body: `{"status":"${status}"}`
-                }).then(response => {
+    if ((windowHeight - nbcmboxpos.y) < menuHeight) {
+        nbcmboxmenu.style.top = windowHeight - menuHeight - 5 + "px";
+    } else {
+        nbcmboxmenu.style.top = nbcmboxpos.y - 5 + "px";
+    }
+    const apis = document.getElementsByClassName('nbcm-api-li');
+    for (let index = 0; index < apis.length; index++) {
+        const api = apis[index];
+        api.addEventListener('click', function(e) {
+            e.preventDefault;
+            const url = e.target.dataset.link;
+            const status = url.substring(url.indexOf("/val=")+5);
+            const uri = url.substring(url.indexOf("/val="), -5);
+            const field = e.target.dataset.field == "undefined" ? "status" : e.target.dataset.field;
+            let payload;
+            if (field == "status") {
+                payload = `{"${field}":"${status}"}`;
+            } else if (field == "ref") {
+                payload = `{"custom_fields": {"${field}":"${status}"}}`
+            } else {
+                payload = `{"custom_fields": {"${field}":${status}}}`
+            }
+            fetch(uri+'/', {
+                credentials: "omit",
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token 33cb389f41c7f8a4331c25947fd5966148cd56eb',
+                    'Accept': 'application/json'
+                },
+                body: payload
+            }).then(response => {
+                const hasMenu = document.getElementsByClassName("nbcm-open");
+                if (hasMenu.length == 0) return;
+                const target = hasMenu[0].parentElement;
+                if (field == "status") {
                     target.classList.remove('bg-purple','bg-cyan','bg-white','bg-red','bg-green','bg-blue','bg-indigo','bg-yellow');
                     const textCont = target.querySelector('.status_label')
                     switch (status) {
@@ -256,250 +281,60 @@ function nbcmShowbox(e) {
                         default:
                             break;
                     }
-                })
-            });
+                } else if (field == "ref") {
+                    response.json().then(data=>{
+                        const newVal = data.custom_fields[field];
+                        target.parentElement.classList.remove('bg-dark', 'bg-green');
+                        target.classList.remove('text-black');
+                        if (newVal != "None") target.classList.add('bg-green');
+                        if (newVal != "None") target.classList.add('text-black');
+                        target.querySelector('.multi-text').innerText = newVal;
+                    });
+                } else {
+                    response.json().then(data=>{
+                        const newVal = data.custom_fields[field];
+                        target.parentElement.classList.remove('text-black', 'bg-green');
+                        //target.parentElement.classList.add(newVal ? 'bg-green' : 'bg-dark');
+                        if (newVal) target.classList.add('bg-green');
+                        if (newVal) target.classList.add('text-black');
+                    });
+                }
+            })
         });
-    }
+    };
 }
 
 function nbcm_page_load() {
-    const css=[`
-    .nbcm-box {
-        white-space: nowrap;
-        display: inline-flex;
-    }
-    .nbcm-icon {
-        padding:.1rem .1rem;
-        margin-left: .2rem;
-        white-space: nowrap;
-        opacity: 20%;
-    }
-    .nbcm-icon:hover {
-        opacity: 80%; 
-    }
-    .nbcm-context-menu {
-        position: absolute !important;
-        padding:2px;
-    }
-    .nbcm-menu {
-        margin: 0;
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        padding: 0;
-        font-size: 16px;
-    }
-    .nbcm-menu > li {
-        padding: 0px 8px !important;
-        border: none !important;
-        font-size: 1em
-    }
-    .nbcm-menu > li > a {
-        text-decoration: unset;
-        padding: 5px 5px;
-        width: 100%;
-        display: flex;
-        transition: 0.5s linear;
-        -webkit-transition: 0.5s linear;
-        -moz-transition: 0.5s linear;
-        -ms-transition: 0.5s linear;
-        -o-transition: 0.5s linear;
-    }
-    .nbcm-menu > li > a > i {
-        padding-right: 10px;
-    }
-    .nbcm-menu > li.trash > a:hover {
-        color: red;
-    }
-    .status_dropdown #nbcmbox::before {
-        content: "";
-        position: absolute;
-        width: 100%;
-        top: 0;
-        height: 100%;
-        left: 0;
-    }
-    .status_dropdown {
-        position: relative;
-    }
-    .status_dropdown .nbcm-box {
-        width: 0;
-        height: 0.8em;
-        overflow: hidden;
-    }
-    .layout {
-        --bg-col: rgb(233, 236, 239);
-        --border-col: rgb(223, 223, 223)
-    }
-    html[data-netbox-color-mode="dark"] .layout {
-        --bg-col: rgb(33, 37, 41);
-        --border-col: rgb(53, 58, 64)
-    }
-    .nbcm-api-li {
-        cursor: pointer;
-    }
-    .nbcm-api-li > * {
-        pointer-events: none;
+    if (document.querySelector('#nbcmboxmenu') == null) {
+        const nbcmboxmenu = document.createElement("div");
+        nbcmboxmenu.id = "nbcmboxmenu";
+        nbcmboxmenu.className = "card nbcm-context-menu";
+        nbcmboxmenu.style = "display: none";
+        const nbcmboxmenuul = nbcmboxmenu.appendChild(document.createElement("ul"));
+        nbcmboxmenuul.className="list-group nbcm-menu";
+        document.body.appendChild(nbcmboxmenu);
+        nbcmboxmenu.addEventListener('mouseleave', function (e) {
+            nbcmHideBox(e)
+        }, false);
     }
 
-    .logo-dark {
-        display: none;
-    }
-
-    .logo-light {
-        display: block;
-    }
-
-    html[data-netbox-color-mode="dark"] .logo-dark {
-        display: block;
-    }
-
-    html[data-netbox-color-mode="dark"] .logo-light {
-        display: none;
-    }
-    
-    .link-custom {
-        white-space: nowrap;
-    }
-
-    table .link-custom {
-        display: inline-block;
-        padding: .35em .65em;
-        font-size: .75rem;
-        font-weight: 700;
-        line-height: 1;
-        color: rgb(255, 255, 255);
-        text-align: center;
-        white-space: nowrap;
-        vertical-align: baseline;
-        border-radius: .375rem;
-        background-color: rgb(33, 150, 243);
-    }
-
-    [hx-get="/dcim/devices/?tag=switch&sort=name"] [hx-get="/dcim/devices/?tag=switch&sort=cl_First+Connection"],
-    [hx-get="/extras/saved-filters/"] > div.row,
-    [hx-get="/ipam/prefixes/?tag=quick-search"] > div.row,
-    [hx-get="/ipam/prefixes/?tag=quick-search"] .noprint,
-    [hx-get="/extras/saved-filters/"] .noprint {
-        display: none;
-    }
-
-    .htmx-container .row {
-        display: none !important;
-    }
-
-    #dashboard .table.object-list {
-        margin-bottom: 0px !important;
-    }
-
-    .card-header.text-center.text-light.bg-black.p-1 {
-        background-color: rgba(0, 112, 255, 0.13) !important;
-    }
-
-    .controls a[href="#nocontrol"] {
-        display: none;
-    }
-
-    @media (max-width: 650px) {
-        #nbcmbox {
-            font-size: 2rem;
+    const types = ['status_dropdown','boolean_dropdown','multi_dropdown'];
+    for (let i = 0; i < types.length; i++) {
+        const drops = document.getElementsByClassName(types[i]);
+        for (let index = 0; index < drops.length; index++) {
+            const drop = drops[index];
+            drop.addEventListener('mouseout', function (e) {
+                if (e.relatedTarget.classList.contains('list-group-item') ||
+                    e.relatedTarget.classList.contains('nbcm-menu') ||
+                    e.relatedTarget.classList.contains('mdi')) return;
+                nbcmHideBox(e);
+            }, false);
         }
     }
-    
-    @media (min-width: 850px) {
-            .form.form-horizontal .noprint.bulk-buttons {
-                position: sticky;
-                bottom: 5px;
-                padding: 0px 4px;
-                width: max-content;
-            }
-            .form.form-horizontal .noprint.bulk-buttons .bulk-button-group{
-                background-color: var(--bg-col);
-                border: 1px solid var(--border-col);
-                border-radius: 10px;
-                padding: 2px;
-            }
-            .card #object_list .row {
-                justify-content: end;
-                position: sticky;
-                bottom: 5px;
-                padding: 0px 4px;
-            }
-            .card #object_list .row > * {
-                width: auto;
-                padding: 5px;
-                background-color: var(--bg-col);
-                border: 1px solid var(--border-col);
-            }
-            .card #object_list .row > :first-child {
-                border-right: none;
-                border-radius: 10px 0px 0px 10px;
-            }
-            .card #object_list .row > :last-child {
-                border-left: none;
-                border-radius: 0px 10px 10px 0px;
-                display: flex;
-                align-content: center;
-                align-items: center;
-                margin-left: -3px;
-                padding-left: 0;
-            }
-            .card #object_list .row > :last-child .dropdown.dropup {
-                padding-right: 10px;
-            }
-            #filters-form .card-footer {
-                position: sticky;
-                bottom: 0;
-                background: var(--bg-col);
-                border-top: var(--border-col) 1px solid !important;
-            }
-            [data-netbox-url-name=cable_add] .tab-content form > .row:last-child,
-            .form-object-edit .text-end {
-                position: sticky;
-                bottom: 10px;
-                width: fit-content;
-                float: right;
-                background: var(--bg-col);
-                border: 1px solid var(--border-col);
-                border-radius: 10px;
-                padding: 5px;
-                margin: 5px !important;
-            }
-            [data-netbox-url-name=cable_add] .tab-content form > .row:last-child > * {
-                padding: 0 !important;
-            }
-        }`
-    ]
-    const head = document.getElementsByTagName('head')[0];
-    if (head) {
-        const style = document.createElement('style');
-        style.type = 'text/css';
-        style.appendChild(document.createTextNode(css.join("\r\n")));
-        head.appendChild(style);
-    }
-    const nbcmboxmenu = document.createElement("div");
-    nbcmboxmenu.id = "nbcmboxmenu";
-    nbcmboxmenu.className = "card nbcm-context-menu";
-    nbcmboxmenu.style = "display: none";
-    const nbcmboxmenuul = nbcmboxmenu.appendChild(document.createElement("ul"));
-    nbcmboxmenuul.className="list-group nbcm-menu";
-    document.body.appendChild(nbcmboxmenu);
-    nbcmboxmenu.addEventListener('mouseleave', function (e) {
-        nbcmHideBox(e)
-    }, false);
-    const drops = document.getElementsByClassName('status_dropdown');
-    drops.forEach(drop => {
-        drop.addEventListener('mouseout', function (e) {
-            if (e.relatedTarget.classList.contains('list-group-item') ||
-                e.relatedTarget.classList.contains('nbcm-menu') ||
-                e.relatedTarget.classList.contains('mdi')) return;
-            nbcmHideBox(e);
-        }, false);
-    });
 }
 
 function nbcm_build_menu(type = "all") {
-    const classes = ['table']
+    const classes = ['table', 'group-frame']
     let i, j, k;
     const nbcm_views_keys = Object.keys(nbcm_views)
 
@@ -517,6 +352,8 @@ function nbcm_build_menu(type = "all") {
                 case "all":
                 default:
                     links = Array.prototype.concat.apply(links, divs[i].getElementsByClassName('status_dropdown'));
+                    links = Array.prototype.concat.apply(links, divs[i].getElementsByClassName('boolean_dropdown'));
+                    links = Array.prototype.concat.apply(links, divs[i].getElementsByClassName('multi_dropdown'));
                     links = Array.prototype.concat.apply(links, divs[i].getElementsByTagName('a'));
                     break;
             }
