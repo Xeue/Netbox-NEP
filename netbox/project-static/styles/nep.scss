@@ -155,6 +155,68 @@ tr:has(.form-check-input:checked) {
 	}
 }
 
+#edit-form {
+	.field_module,
+	.field_duplex,
+	.field_parent,
+	.field_bridge,
+	.field_vrf,
+	.field_mac_address,
+	.field_wwn,
+	.field_vdcs,
+	.field_mtu,
+	.field_tx_power,
+	.field_speed,
+	.field_airflow,
+	.field_platform,
+	.field_serial,
+	.field_primary_ip6,
+	.field_config_template,
+	.field_tenant,
+	.advanced_group,
+	.PoE,
+	.Wireless,
+	.Configuration {
+		display: none;
+  	}
+  
+  	#form-advanced-toggle::before {
+		content: "Show";
+  	}
+}
+
+#edit-form.show-advanced {
+	.field_module,
+	.field_duplex,
+	.field_parent,
+	.field_bridge,
+	.field_vrf,
+	.field_mac_address,
+	.field_wwn,
+	.field_vdcs,
+	.field_mtu,
+	.field_tx_power,
+	.field_airflow,
+	.field_platform,
+	.field_serial,
+	.field_primary_ip6,
+	.field_config_template,
+	.field_tenant,
+	.field_speed {
+		display: flex;
+  	}
+
+	.advanced_group,
+	.Configuration,
+	.PoE,
+	.Wireless {
+		display: block;
+	}
+  
+  	#form-advanced-toggle::before {
+		content: "Hide";
+  	}
+}
 
 @media (max-width: 650px) {
 	#nbcmbox {
@@ -210,7 +272,7 @@ tr:has(.form-check-input:checked) {
 		border-top: var(--border-col) 1px solid !important;
 	}
 	[data-netbox-url-name=cable_add] .tab-content form > .row:last-child,
-	.form-object-edit .text-end {
+	.floating-controls {
 		position: sticky;
 		bottom: 10px;
 		width: fit-content;
@@ -223,5 +285,11 @@ tr:has(.form-check-input:checked) {
 	}
 	[data-netbox-url-name=cable_add] .tab-content form > .row:last-child > * {
 		padding: 0 !important;
+	}
+	.form-null-grid {
+		display: grid;
+		grid-template-areas: "one two";
+		grid-template-columns: 5fr 1fr;
+		justify-items: center;
 	}
 }

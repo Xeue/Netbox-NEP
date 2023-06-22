@@ -458,6 +458,12 @@ window.addEventListener("load", event => {
                 }
             }
             location.href = path+"?"+params.toString();
+        } else if (e.target.id == 'config-copy') {
+            const text = document.getElementById('config-content').innerHTML;
+            navigator.clipboard.writeText(text);
+        } else if (e.target.id == 'form-advanced-toggle') {
+            const form = document.getElementById('edit-form');
+            form.classList.toggle('show-advanced');
         }
     });
 });

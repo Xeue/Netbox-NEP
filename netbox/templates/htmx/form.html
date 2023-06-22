@@ -9,7 +9,7 @@
 
   {# Render grouped fields according to Form #}
   {% for group, fields in form.fieldsets %}
-    <div class="field-group mb-5">
+    <div class="field-group mb-5 {{ group }}">
       {% if group %}
         <div class="row mb-2">
           <h5 class="offset-sm-3">{{ group }}</h5>

@@ -1,7 +1,6 @@
 {% load form_helpers %}
 {% load helpers %}
-
-<div class="row mb-3{% if field.errors %} has-errors{% endif %}">
+<div class="row mb-3{% if field.errors %} has-errors{% endif %} field_{{field.name}}">
 
   {# Render the field label (if any), except for checkboxes #}
   {% if label and not field|widget_type == 'checkboxinput' %}
@@ -11,7 +10,8 @@
   {% endif %}
 
   {# Render the field itself #}
-  <div class="col{% if field|widget_type == 'checkboxinput' %} offset-3{% endif %}">
+  <div class="col{% if field|widget_type == 'checkboxinput' %} offset-3{% endif %}{% if bulk_nullable %} form-null-grid{% endif %}">
+    <div class="w-100">
     {# Include the "regenerate" button on slug fields #}
     {% if field|widget_type == 'slugwidget' %}
       <div class="input-group">
@@ -48,6 +48,7 @@
     {% if field.help_text %}
       <span class="form-text">{{ field.help_text|safe }}</span>
     {% endif %}
+    </div>
 
     {# For bulk edit forms, include an option to nullify the field #}
     {% if bulk_nullable %}

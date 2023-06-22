@@ -52,14 +52,17 @@
       <div class="card">
         <div class="card-header">
           <div class="float-end">
+            <button id="config-copy" type="button" class="btn btn-sm btn-primary" role="button">
+              <i class="mdi mdi-download" aria-hidden="true"></i> Copy to Clipboard
+            </button>
             <a href="?export=True" class="btn btn-sm btn-primary" role="button">
-              <i class="mdi mdi-download" aria-hidden="true"></i> Download
+              <i class="mdi mdi-clipboard-multiple-outline" aria-hidden="true"></i> Download
             </a>
           </div>
           <h5>Rendered Config</h5>
         </div>
         {% if config_template %}
-          <pre class="card-body">{{ rendered_config }}</pre>
+          <pre class="card-body" id="config-content">{{ rendered_config }}</pre>
         {% else %}
           <div class="card-body text-muted">No configuration template found</div>
         {% endif %}

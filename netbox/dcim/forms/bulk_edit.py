@@ -1248,7 +1248,11 @@ class InterfaceBulkEditForm(
     model = Interface
     fieldsets = (
         (None, ('module', 'type', 'label', 'speed', 'duplex', 'description')),
-        ('Port Mode', ('mode', 'vlan_group', 'untagged_vlan', 'tagged_vlans', 'lag', 'enabled', 'mgmt_only', 'mark_connected')),
+        ('Port Mode', ('mode', 'vlan_group', 'untagged_vlan', 'tagged_vlans')),
+        ('Interface Setting', ('lag', 'parent', 'bridge', 'vrf', 'mac_address', 'wwn')),
+        ('Operation', ('vdcs', 'mtu', 'tx_power', 'enabled', 'mgmt_only', 'mark_connected')),
+        ('PoE', ('poe_mode', 'poe_type')),
+        ('Wireless', ('rf_role', 'rf_channel', 'rf_channel_frequency', 'rf_channel_width')),
         #(None, ('module', 'type', 'label', 'speed', 'duplex', 'description')),
         #('Addressing', ('vrf', 'mac_address', 'wwn')),
         #('Operation', ('vdcs', 'mtu', 'tx_power', 'enabled', 'mgmt_only', 'mark_connected')),

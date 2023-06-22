@@ -43,7 +43,7 @@ Context:
         </div>
       {% endif %}
 
-      <form action="" method="post" enctype="multipart/form-data" class="form-object-edit mt-5">
+      <form action="" method="post" id="edit-form" enctype="multipart/form-data" class="form-object-edit mt-5">
         {% csrf_token %}
 
         <div id="form_fields">
@@ -52,8 +52,11 @@ Context:
           {% endblock form %}
         </div>
 
-        <div class="text-end my-3">
+        <div class="text-end my-3 floating-controls">
           {% block buttons %}
+            <button id="form-advanced-toggle" type="button" class="btn btn-secondary">
+              Advanced
+            </button>
             {% if object.pk %}
               <button type="submit" name="_update" class="btn btn-primary">
                 Save

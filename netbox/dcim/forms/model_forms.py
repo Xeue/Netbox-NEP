@@ -1120,7 +1120,11 @@ class InterfaceForm(InterfaceCommonForm, ModularDeviceComponentForm):
 
     fieldsets = (
         ('Interface', ('device', 'module', 'name', 'label', 'type', 'speed', 'duplex', 'description', 'tags')),
-        ('Port Mode', ('mode', 'vlan_group', 'untagged_vlan', 'tagged_vlans', 'lag', 'enabled', 'mgmt_only', 'mark_connected')),
+        ('Port Mode', ('mode', 'untagged_vlan', 'tagged_vlans')),
+        ('Interface Setting', ('lag', 'parent', 'bridge', 'vrf', 'mac_address', 'wwn')),
+        ('Operation', ('vdcs', 'mtu', 'tx_power', 'enabled', 'mgmt_only', 'mark_connected')),
+        ('PoE', ('poe_mode', 'poe_type')),
+        ('Wireless', ('rf_role', 'rf_channel', 'rf_channel_frequency', 'rf_channel_width', 'wireless_lan_group', 'wireless_lans')),
         #('Interface', ('device', 'module', 'name', 'label', 'type', 'speed', 'duplex', 'description', 'tags')),
         #('Addressing', ('vrf', 'mac_address', 'wwn')),
         #('Operation', ('vdcs', 'mtu', 'tx_power', 'enabled', 'mgmt_only', 'mark_connected')),

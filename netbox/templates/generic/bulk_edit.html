@@ -35,7 +35,7 @@ Context:
 
       {# Edit form #}
       <div class="tab-pane show active" id="edit-form" role="tabpanel" aria-labelledby="edit-form-tab">
-        <form action="" method="post" class="form form-horizontal">
+        <form action="" id="edit-form" method="post" class="form form-horizontal">
 
           {% csrf_token %}
           {% if request.POST.return_url %}
@@ -47,13 +47,13 @@ Context:
 
           <div class="row">
             <div class="col col-md-12 col-lg-10 offset-lg-1">
-              <div class="card">
+              <div class="">
                 <div class="card-body">
                   {% if form.fieldsets %}
 
                     {# Render grouped fields according to declared fieldsets #}
                     {% for group, fields in form.fieldsets %}
-                      <div class="field-group mb-5">
+                      <div class="field-group mb-5 {% if group %}{{ group }}{% else %}{{ model|meta:"verbose_name"|bettertitle }}{% endif %}">
                         <div class="row mb-2">
                           <h5 class="offset-sm-3">
                             {% if group %}{{ group }}{% else %}{{ model|meta:"verbose_name"|bettertitle }}{% endif %}
@@ -84,7 +84,7 @@ Context:
 
                     {# Render custom fields #}
                     {% if form.custom_fields %}
-                      <div class="field-group mb-5">
+                      <div class="field-group mb-5 advanced_group">
                         <div class="row mb-2">
                           <h5 class="offset-sm-3">Custom Fields</h5>
                         </div>
@@ -117,7 +117,10 @@ Context:
                 </div>
               </div>
 
-              <div class="text-end">
+              <div class="text-end floating-controls">
+                <button id="form-advanced-toggle" type="button" class="btn btn-secondary btn-sm">
+                  Advanced
+                </button>
                 <button type="submit" name="_apply" class="btn btn-sm btn-primary">Apply</button>
                 <a href="{{ return_url }}" class="btn btn-sm btn-outline-danger">Cancel</a>
               </div>

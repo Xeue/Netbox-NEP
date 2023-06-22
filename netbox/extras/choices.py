@@ -108,12 +108,14 @@ class JournalEntryKindChoices(ChoiceSet):
     KIND_SUCCESS = 'success'
     KIND_WARNING = 'warning'
     KIND_DANGER = 'danger'
+    KIND_CONFIG = 'config'
 
     CHOICES = [
         (KIND_INFO, 'Info', 'cyan'),
         (KIND_SUCCESS, 'Success', 'green'),
         (KIND_WARNING, 'Warning', 'yellow'),
         (KIND_DANGER, 'Danger', 'red'),
+        (KIND_CONFIG, 'Config Change', 'pink'),
     ]
 
 
