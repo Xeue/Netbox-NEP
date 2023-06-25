@@ -464,6 +464,24 @@ window.addEventListener("load", event => {
         } else if (e.target.id == 'form-advanced-toggle') {
             const form = document.getElementById('edit-form');
             form.classList.toggle('show-advanced');
+        } else if (e.target.classList.contains('site-selector')) {
+            const currentParams = new URLSearchParams(location.search);
+            currentParams.set("site_id", e.target.getAttribute('data-site-id'));
+            window.location = location.pathname +"?"+ currentParams.toString();
+        } else if (e.target.tagName == 'A' || e.target.closest('A') != undefined) {
+            const search = e.target.tagName == 'A' ? e.target : e.target.closest('A');
+            const currentParams = new URLSearchParams(location.search);
+            const site_id = currentParams.get('site_id');
+            const searchURL = new URL(search.href);
+            const searchParams = searchURL.searchParams;
+            searchParams.set("site_id", site_id);
+            const fullSearch = searchURL.pathname +"?"+ searchParams.toString();
+            if (searchURL.pathname != location.pathname) {
+                e.preventDefault();
+                window.location = fullSearch;
+            } else {
+                e.preventDefault();
+            }
         }
     });
 });

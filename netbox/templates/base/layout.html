@@ -46,18 +46,18 @@ Blocks:
             </div>
 
             {# Desktop Navigation #}
-            <div class="row search-container">
+            <div class="row search-container justify-content-between">
 
               {# Empty spacer column to ensure search is centered. #}
-              <div class="col-3 d-flex flex-grow-1 ps-0"></div>
+              <div class="col-auto"></div>
 
               {# Search bar #}
-              <div class="col-6 d-flex flex-grow-1 flex-column justify-content-center">
+              <div class="col-6 d-flex flex-column justify-content-center">
                 {% include 'inc/searchbar.html' %}
               </div>
 
               {# Proflie/login button #}
-              <div class="col-3 d-flex flex-grow-1 pe-0 justify-content-end">
+              <div class="d-flex pe-0 justify-content-end w-auto">
                 {% include 'inc/profile_button.html' %}
               </div>
 

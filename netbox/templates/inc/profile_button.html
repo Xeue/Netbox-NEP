@@ -1,16 +1,28 @@
 {% if request.user.is_authenticated %}
-  <div class="dropdown me-1 d-none test">
-    {{request}}
+  <div class="dropdown me-1">
     <button type="button" aria-expanded="false" data-bs-toggle="dropdown" class="btn btn-outline-secondary site-select-toggle w-100">
       <i class="mdi mdi-map-marker"></i>
-      <span id="navbar_user">Site</span>
+
+      {% with searchId=request.GET.site_id %}
+        {% for site in sites %}
+          {% if site.id|add:"0" == searchId|add:"0" %}
+            <span>{{ site }}</span>
+          {% endif %}
+        {% endfor %}
+      {% endwith %}
     </button>
     <ul class="dropdown-menu dropdown-menu-end">
       <li>
-        <button type="button" class="dropdown-item">
+        <button type="button" class="dropdown-item site-selector" data-site-id="0">
           <i class="mdi mdi-map"></i>
-          <span>Wimbledon Host</span>
+          <span>All</span>
         </button>
+        {% for site in sites %}
+          <button type="button" class="dropdown-item site-selector" data-site-id="{{site.id}}">
+            <i class="mdi mdi-map"></i>
+            <span>{{ site }}</span>
+          </button>
+        {% endfor %}
       </li>
     </ul>
   </div>

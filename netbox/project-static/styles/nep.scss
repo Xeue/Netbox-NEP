@@ -108,6 +108,10 @@ table .link-custom {
 	display: none;
 }
 
+.site-selector > * {
+  pointer-events: none;
+}
+
 .dashboard-card .htmx-container .row {
 	display: none !important;
 }

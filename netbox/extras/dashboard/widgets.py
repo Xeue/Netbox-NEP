@@ -239,10 +239,14 @@ class ObjectListWidget(DashboardWidget):
                 htmx_url = f'{htmx_url}?{urlencode(parameters, doseq=True)}'
             except ValueError:
                 pass
+
+        site_id = request.GET.get('site_id', '0')
+        
         return render_to_string(self.template_name, {
             'viewname': viewname,
             'has_permission': has_permission,
             'htmx_url': htmx_url,
+            'site_id': site_id
         })
 
 

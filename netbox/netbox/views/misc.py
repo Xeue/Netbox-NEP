@@ -8,6 +8,7 @@ from django.shortcuts import redirect, render
 from django.views.generic import View
 from django_tables2 import RequestConfig
 from packaging import version
+from dcim.models import *
 
 from extras.dashboard.utils import get_dashboard
 from netbox.forms import SearchForm
@@ -48,10 +49,14 @@ class HomeView(View):
                         'url': release_url,
                     }
 
+        site_id = request.GET.get('site_id', '0')
+
         return render(request, self.template_name, {
             'dashboard': dashboard,
             'new_release': new_release,
-            'filter_form': GenericFilterForm
+            'filter_form': GenericFilterForm,
+            'sites': Site.objects.all(),
+            'site_id':site_id
         })
 
 
@@ -106,4 +111,6 @@ class SearchView(View):
         return render(request, 'search.html', {
             'form': form,
             'table': table,
+            'sites': Site.objects.all(),
+            'site_id':request.GET.site_id
         })
