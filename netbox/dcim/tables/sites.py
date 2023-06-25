@@ -1,4 +1,5 @@
 import django_tables2 as tables
+from django.utils.html import format_html
 from dcim.models import Location, Region, Site, SiteGroup, ProjectNames
 from tenancy.tables import ContactsColumnMixin, TenancyColumnsMixin
 
@@ -152,4 +153,7 @@ class LocationTable(TenancyColumnsMixin, ContactsColumnMixin, NetBoxTable):
         super().__init__(*args, **kwargs)
 
     def render_name(self, value, record):
-        return f"{ProjectNames.get(record)}"
+        tree = ""
+        if not self.order_by:
+            tree = "\u00A0•\u00A0\u00A0" * record.level
+        return format_html("</a><span class=\"record-depth\">{}</span><a href=\"{}\">{}</a>", tree, record.get_absolute_url(), ProjectNames.get(record))
