@@ -28,6 +28,9 @@
                         </p>
 <pre class="block"><strong>{{ exception }}</strong><br />
 {{ error }}
+{% for line in traceback %}
+    {{ line }}
+{% endfor %}
 
 Python version: {{ python_version }}
 NetBox version: {{ netbox_version }}</pre>

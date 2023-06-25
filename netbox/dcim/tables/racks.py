@@ -1,7 +1,7 @@
 import django_tables2 as tables
 from django_tables2.utils import Accessor
 
-from dcim.models import Rack, RackReservation, RackRole
+from dcim.models import Rack, RackReservation, RackRole, ProjectNames
 from netbox.tables import NetBoxTable, columns
 from tenancy.tables import ContactsColumnMixin, TenancyColumnsMixin
 from .template_code import WEIGHT
@@ -99,13 +99,19 @@ class RackTable(TenancyColumnsMixin, ContactsColumnMixin, NetBoxTable):
             'pk', 'id', 'name', 'site', 'location', 'status', 'facility_id', 'tenant', 'tenant_group', 'role', 'serial',
             'asset_tag', 'type', 'u_height', 'width', 'outer_width', 'outer_depth', 'mounting_depth', 'weight',
             'max_weight', 'comments', 'device_count', 'get_utilization', 'get_power_utilization', 'description',
-            'contacts', 'tags', 'created', 'last_updated',
+            'contacts', 'tags', 'created', 'last_updated', 'project_name'
         )
         default_columns = (
             'name', 'site', 'location', 'status', 'facility_id', 'role', 'u_height', 'device_count',
             'get_utilization', 'tags',
         )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        #self.columns['name'].render = FullName
+
+    def render_name(self, value, record):
+        return f"{ProjectNames.get(record)}"
 
 #
 # Rack reservations

@@ -238,11 +238,16 @@ class DeviceTable(TenancyColumnsMixin, ContactsColumnMixin, NetBoxTable):
             'platform', 'serial', 'asset_tag', 'region', 'site_group', 'site', 'location', 'rack', 'parent_device',
             'device_bay_position', 'position', 'face', 'airflow', 'primary_ip', 'primary_ip4', 'primary_ip6', 'cluster',
             'virtual_chassis', 'vc_position', 'vc_priority', 'description', 'config_template', 'comments', 'contacts',
-            'tags', 'created', 'last_updated',
+            'tags', 'created', 'last_updated', 'project_name'
         )
         default_columns = (
             'status', 'name', 'cl_Hot Link', 'primary_ip', 'site', 'location', 'rack', 'device_role', 'device_type', 'tags',
         )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def render_name(self, value, record):
+        return f"{models.ProjectNames.get(record)}"
 
 
 class DeviceImportTable(TenancyColumnsMixin, NetBoxTable):

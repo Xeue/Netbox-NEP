@@ -13,6 +13,10 @@
                 <div class="card-body">
                     <table class="table table-hover attr-table">
                         <tr>
+                            <th scope="row">Project Specific Name</th>
+                            <td>{{ object.project_name|placeholder }}</td>
+                        </tr>
+                        <tr>
                             <th scope="row">Region</th>
                             <td>
                                 {% if object.site.region %}

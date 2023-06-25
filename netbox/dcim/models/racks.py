@@ -19,7 +19,7 @@ from utilities.choices import ColorChoices
 from utilities.fields import ColorField, NaturalOrderingField
 from utilities.utils import array_to_string, drange, to_grams
 from .device_components import PowerPort
-from .devices import Device, Module
+from .devices import Device, Module, ProjectNames
 from .mixins import WeightMixin
 from .power import PowerFeed
 
@@ -59,6 +59,14 @@ class Rack(PrimaryModel, WeightMixin):
         max_length=100,
         blank=True
     )
+
+    project_name = models.CharField(
+        max_length=64,
+        blank=True,
+        null=True,
+        verbose_name='Project Name',
+    )
+
     facility_id = models.CharField(
         max_length=50,
         blank=True,
@@ -206,8 +214,8 @@ class Rack(PrimaryModel, WeightMixin):
 
     def __str__(self):
         if self.facility_id:
-            return f'{self.name} ({self.facility_id})'
-        return self.name
+            return f'{ProjectNames.get(self)} ({self.facility_id})'
+        return ProjectNames.get(self)
 
     def get_absolute_url(self):
         return reverse('dcim:rack', args=[self.pk])

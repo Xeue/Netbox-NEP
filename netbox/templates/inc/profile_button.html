@@ -1,4 +1,19 @@
 {% if request.user.is_authenticated %}
+  <div class="dropdown me-1 d-none test">
+    {{request}}
+    <button type="button" aria-expanded="false" data-bs-toggle="dropdown" class="btn btn-outline-secondary site-select-toggle w-100">
+      <i class="mdi mdi-map-marker"></i>
+      <span id="navbar_user">Site</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li>
+        <button type="button" class="dropdown-item">
+          <i class="mdi mdi-map"></i>
+          <span>Wimbledon Host</span>
+        </button>
+      </li>
+    </ul>
+  </div>
   <div class="dropdown profile-button">
     <button type="button" aria-expanded="false" data-bs-toggle="dropdown" class="btn btn-outline-secondary dropdown-toggle w-100">
       <i class="mdi mdi-account"></i>

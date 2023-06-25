@@ -1,5 +1,6 @@
 import platform
 import sys
+import traceback
 
 from django.conf import settings
 from django.http import HttpResponseServerError
@@ -46,11 +47,12 @@ def handler_500(request, template_name=ERROR_500_TEMPLATE_NAME):
         template = loader.get_template(template_name)
     except TemplateDoesNotExist:
         return HttpResponseServerError('<h1>Server Error (500)</h1>', content_type='text/html')
-    type_, error, traceback = sys.exc_info()
+    type_, error, tb = sys.exc_info()
 
     return HttpResponseServerError(template.render({
         'error': error,
         'exception': str(type_),
+        'traceback': traceback.format_exception(*sys.exc_info()),
         'netbox_version': settings.VERSION,
         'python_version': platform.python_version(),
     }))

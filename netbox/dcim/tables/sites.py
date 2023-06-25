@@ -1,5 +1,5 @@
 import django_tables2 as tables
-from dcim.models import Location, Region, Site, SiteGroup
+from dcim.models import Location, Region, Site, SiteGroup, ProjectNames
 from tenancy.tables import ContactsColumnMixin, TenancyColumnsMixin
 
 from netbox.tables import NetBoxTable, columns
@@ -101,9 +101,15 @@ class SiteTable(TenancyColumnsMixin, ContactsColumnMixin, NetBoxTable):
         fields = (
             'pk', 'id', 'name', 'slug', 'status', 'facility', 'region', 'group', 'tenant', 'tenant_group', 'asns',
             'asn_count', 'time_zone', 'description', 'physical_address', 'shipping_address', 'latitude', 'longitude',
-            'comments', 'contacts', 'tags', 'created', 'last_updated', 'actions',
+            'comments', 'contacts', 'tags', 'created', 'last_updated', 'actions', 'project_name',
         )
         default_columns = ('pk', 'name', 'status', 'facility', 'region', 'group', 'tenant', 'description')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def render_name(self, value, record):
+        return f"{ProjectNames.get(record)}"
 
 
 #
@@ -139,6 +145,11 @@ class LocationTable(TenancyColumnsMixin, ContactsColumnMixin, NetBoxTable):
         model = Location
         fields = (
             'pk', 'id', 'name', 'site', 'status', 'tenant', 'tenant_group', 'rack_count', 'device_count', 'description',
-            'slug', 'contacts', 'tags', 'actions', 'created', 'last_updated',
+            'slug', 'contacts', 'tags', 'actions', 'created', 'last_updated', 'project_name',
         )
         default_columns = ('name', 'site', 'status', 'rack_count', 'device_count', 'description', 'cl_Plug-up List')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def render_name(self, value, record):
+        return f"{ProjectNames.get(record)}"

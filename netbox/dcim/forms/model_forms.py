@@ -131,7 +131,7 @@ class SiteForm(TenancyForm, NetBoxModelForm):
 
     fieldsets = (
         ('Site', (
-            'name', 'slug', 'status', 'region', 'group', 'facility', 'asns', 'time_zone', 'description', 'tags',
+            'name', 'project_name', 'slug', 'status', 'region', 'group', 'facility', 'asns', 'time_zone', 'description', 'tags',
         )),
         ('Tenancy', ('tenant_group', 'tenant')),
         ('Contact Info', ('physical_address', 'shipping_address', 'latitude', 'longitude')),
@@ -141,7 +141,7 @@ class SiteForm(TenancyForm, NetBoxModelForm):
         model = Site
         fields = (
             'name', 'slug', 'status', 'region', 'group', 'tenant_group', 'tenant', 'facility', 'asns', 'time_zone',
-            'description', 'physical_address', 'shipping_address', 'latitude', 'longitude', 'comments', 'tags',
+            'description', 'physical_address', 'shipping_address', 'latitude', 'longitude', 'comments', 'tags', 'project_name',
         )
         widgets = {
             'physical_address': forms.Textarea(
@@ -172,14 +172,14 @@ class LocationForm(TenancyForm, NetBoxModelForm):
     slug = SlugField()
 
     fieldsets = (
-        ('Location', ('site', 'parent', 'name', 'slug', 'status', 'description', 'tags')),
+        ('Location', ('site', 'parent', 'name', 'slug', 'status', 'project_name', 'description', 'tags')),
         ('Tenancy', ('tenant_group', 'tenant')),
     )
 
     class Meta:
         model = Location
         fields = (
-            'site', 'parent', 'name', 'slug', 'status', 'description', 'tenant_group', 'tenant', 'tags',
+            'site', 'parent', 'name', 'slug', 'status', 'description', 'tenant_group', 'tenant', 'tags', 'project_name',
         )
 
 
@@ -222,7 +222,7 @@ class RackForm(TenancyForm, NetBoxModelForm):
         fields = [
             'site', 'location', 'name', 'facility_id', 'tenant_group', 'tenant', 'status', 'role', 'serial',
             'asset_tag', 'type', 'width', 'u_height', 'desc_units', 'outer_width', 'outer_depth', 'outer_unit',
-            'mounting_depth', 'weight', 'max_weight', 'weight_unit', 'description', 'comments', 'tags',
+            'mounting_depth', 'weight', 'max_weight', 'weight_unit', 'description', 'comments', 'tags', 'project_name',
         ]
 
 
@@ -453,7 +453,7 @@ class DeviceForm(TenancyForm, NetBoxModelForm):
     class Meta:
         model = Device
         fields = [
-            'name', 'device_role', 'device_type', 'serial', 'asset_tag', 'site', 'rack', 'location', 'position', 'face',
+            'name', 'project_name', 'device_role', 'device_type', 'serial', 'asset_tag', 'site', 'rack', 'location', 'position', 'face',
             'status', 'airflow', 'platform', 'primary_ip4', 'primary_ip6', 'cluster', 'tenant_group', 'tenant',
             'virtual_chassis', 'vc_position', 'vc_priority', 'description', 'config_template', 'comments', 'tags',
             'local_context_data'

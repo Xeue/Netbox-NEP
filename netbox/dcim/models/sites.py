@@ -9,6 +9,7 @@ from dcim.choices import *
 from dcim.constants import *
 from netbox.models import NestedGroupModel, PrimaryModel
 from utilities.fields import NaturalOrderingField
+from dcim.models import ProjectNames
 
 __all__ = (
     'Location',
@@ -147,6 +148,12 @@ class Site(PrimaryModel):
         max_length=100,
         blank=True
     )
+    project_name = models.CharField(
+        max_length=64,
+        blank=True,
+        null=True,
+        verbose_name='Project Name',
+    )
     slug = models.SlugField(
         max_length=100,
         unique=True
@@ -238,7 +245,7 @@ class Site(PrimaryModel):
         ordering = ('_name',)
 
     def __str__(self):
-        return self.name
+        return ProjectNames.get(self)
 
     def get_absolute_url(self):
         return reverse('dcim:site', args=[self.pk])
@@ -260,6 +267,12 @@ class Location(NestedGroupModel):
         to='dcim.Site',
         on_delete=models.CASCADE,
         related_name='locations'
+    )
+    project_name = models.CharField(
+        max_length=64,
+        blank=True,
+        null=True,
+        verbose_name='Project Name',
     )
     status = models.CharField(
         max_length=50,
@@ -292,6 +305,9 @@ class Location(NestedGroupModel):
     prerequisite_models = (
         'dcim.Site',
     )
+
+    def __str__(self):
+        return ProjectNames.get(self)
 
     class Meta:
         ordering = ['site', 'name']

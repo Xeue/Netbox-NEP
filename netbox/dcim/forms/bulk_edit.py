@@ -137,16 +137,21 @@ class SiteBulkEditForm(NetBoxModelBulkEditForm):
         max_length=200,
         required=False
     )
+    project_name = forms.CharField(
+        max_length=50,
+        required=False,
+        label=_('Project Specific Name')
+    )
     comments = CommentField(
         label='Comments'
     )
 
     model = Site
     fieldsets = (
-        (None, ('status', 'region', 'group', 'tenant', 'asns', 'time_zone', 'description')),
+        (None, ('status', 'region', 'group', 'tenant', 'asns', 'time_zone', 'project_name', 'description')),
     )
     nullable_fields = (
-        'region', 'group', 'tenant', 'asns', 'time_zone', 'description', 'comments',
+        'region', 'group', 'tenant', 'asns', 'time_zone', 'description', 'project_name', 'comments',
     )
 
 
@@ -175,12 +180,17 @@ class LocationBulkEditForm(NetBoxModelBulkEditForm):
         max_length=200,
         required=False
     )
+    project_name = forms.CharField(
+        max_length=50,
+        required=False,
+        label=_('Project Specific Name')
+    )
 
     model = Location
     fieldsets = (
-        (None, ('site', 'parent', 'status', 'tenant', 'description')),
+        (None, ('site', 'parent', 'status', 'tenant', 'project_name', 'description')),
     )
-    nullable_fields = ('parent', 'tenant', 'description')
+    nullable_fields = ('parent', 'tenant', 'project_name', 'description')
 
 
 class RackRoleBulkEditForm(NetBoxModelBulkEditForm):
@@ -251,6 +261,11 @@ class RackBulkEditForm(NetBoxModelBulkEditForm):
         max_length=50,
         required=False
     )
+    project_name = forms.CharField(
+        max_length=50,
+        required=False,
+        label=_('Project Specific Name')
+    )
     type = forms.ChoiceField(
         choices=add_blank_choice(RackTypeChoices),
         required=False
@@ -307,7 +322,7 @@ class RackBulkEditForm(NetBoxModelBulkEditForm):
 
     model = Rack
     fieldsets = (
-        ('Rack', ('status', 'role', 'tenant', 'serial', 'asset_tag', 'description')),
+        ('Rack', ('status', 'role', 'tenant', 'serial', 'asset_tag', 'project_name', 'description')),
         ('Location', ('region', 'site_group', 'site', 'location')),
         ('Hardware', (
             'type', 'width', 'u_height', 'desc_units', 'outer_width', 'outer_depth', 'outer_unit', 'mounting_depth',
@@ -316,7 +331,7 @@ class RackBulkEditForm(NetBoxModelBulkEditForm):
     )
     nullable_fields = (
         'location', 'tenant', 'role', 'serial', 'asset_tag', 'outer_width', 'outer_depth', 'outer_unit', 'weight',
-        'max_weight', 'weight_unit', 'description', 'comments',
+        'max_weight', 'weight_unit', 'description', 'comments', 'project_name'
     )
 
 
@@ -540,6 +555,11 @@ class DeviceBulkEditForm(NetBoxModelBulkEditForm):
         required=False,
         label=_('Serial Number')
     )
+    project_name = forms.CharField(
+        max_length=50,
+        required=False,
+        label=_('Project Specific Name')
+    )
     description = forms.CharField(
         max_length=200,
         required=False
@@ -554,13 +574,13 @@ class DeviceBulkEditForm(NetBoxModelBulkEditForm):
 
     model = Device
     fieldsets = (
-        ('Device', ('device_role', 'status', 'tenant', 'platform', 'description')),
+        ('Device', ('device_role', 'status', 'tenant', 'platform', 'project_name', 'description')),
         ('Location', ('site', 'location')),
         ('Hardware', ('manufacturer', 'device_type', 'airflow', 'serial')),
         ('Configuration', ('config_template',)),
     )
     nullable_fields = (
-        'location', 'tenant', 'platform', 'serial', 'airflow', 'description', 'comments',
+        'location', 'tenant', 'platform', 'serial', 'airflow', 'project_name', 'description', 'comments',
     )
 
 

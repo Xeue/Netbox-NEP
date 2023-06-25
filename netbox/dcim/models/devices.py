@@ -1,5 +1,6 @@
 import decimal
 import yaml
+import logging
 
 from functools import cached_property
 
@@ -36,8 +37,10 @@ __all__ = (
     'Platform',
     'VirtualChassis',
     'VirtualDeviceContext',
+    'ProjectNames',
 )
 
+logger = logging.getLogger('netbox.core.data')
 
 #
 # Device Types
@@ -638,6 +641,13 @@ class Device(PrimaryModel, ConfigContextModel):
         null=True
     )
 
+    project_name = models.CharField(
+        max_length=64,
+        blank=True,
+        null=True,
+        verbose_name='Project Name',
+    )
+
     # Generic relations
     contacts = GenericRelation(
         to='tenancy.ContactAssignment'
@@ -683,9 +693,9 @@ class Device(PrimaryModel, ConfigContextModel):
 
     def __str__(self):
         if self.name and self.asset_tag:
-            return f'{self.name} ({self.asset_tag})'
+            return f'{ProjectNames.get(self)} ({self.asset_tag})'
         elif self.name:
-            return self.name
+            return ProjectNames.get(self)
         elif self.virtual_chassis and self.asset_tag:
             return f'{self.virtual_chassis.name}:{self.vc_position} ({self.asset_tag})'
         elif self.virtual_chassis:
@@ -1287,3 +1297,38 @@ class VirtualDeviceContext(PrimaryModel):
                 raise ValidationError({
                     f'primary_ip{family}': _('Primary IP address must belong to an interface on the assigned device.')
                 })
+
+
+class ProjectNames():
+    def get(record):
+        if record.project_name is not None:
+            return f"{record.name} ({record.project_name})"
+        if hasattr(record, 'rack'):
+            if hasattr(record.rack, 'project_name'):
+                if record.rack.project_name is not None:
+                    return f"{record.name} ({record.rack.project_name})"
+
+        if hasattr(record, 'location'):
+            location = record.location
+            while True:
+                if hasattr(location, 'project_name'):
+                    if location.project_name is not None:
+                        return f"{record.name} ({location.project_name})"
+                if hasattr(location, 'parent'):
+                    if location.parent is not None:
+                        location = location.parent
+                        continue
+                break
+
+        if hasattr(record, 'site'):
+            site = record.site
+            while True:
+                if hasattr(site, 'project_name'):
+                    if site.project_name is not None:
+                        return f"{record.name} ({site.project_name})"
+                if hasattr(site, 'parent'):
+                    if site.parent is not None:
+                        site = site.parent
+                        continue
+                break
+        return f"{record.name}"
