@@ -16,6 +16,7 @@ from django.utils.http import urlencode
 from netbox.config import get_config
 from utilities.utils import foreground_color, array_to_ranges
 from dcim.constants import RACK_ELEVATION_BORDER_WIDTH
+from dcim.models import ProjectNames
 
 
 __all__ = (
@@ -31,8 +32,8 @@ STROKE_RESERVED = '#4d4dff'
 def get_device_name(device):
     if device.virtual_chassis:
         name = f'{device.virtual_chassis.name}:{device.vc_position}'
-    elif device.name:
-        name = device.name
+    elif ProjectNames.get(device):
+        name = ProjectNames.get(device)
     else:
         name = str(device.device_type)
     if device.devicebay_count:

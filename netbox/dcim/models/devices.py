@@ -1300,35 +1300,40 @@ class VirtualDeviceContext(PrimaryModel):
 
 
 class ProjectNames():
+    def doLoop(record, search):
+        while True:
+            if hasattr(search, 'project_name'):
+                if search.project_name is not None:
+                    return f"{record.name} ({search.project_name})"
+            if hasattr(search, 'parent'):
+                if search.parent is not None:
+                    search = search.parent
+                    continue
+            break
+        return False
+
     def get(record):
-        if record.project_name is not None:
-            return f"{record.name} ({record.project_name})"
+        if hasattr(record, 'project_name'):
+            if record.project_name is not None:
+                return f"{record.name} ({record.project_name})"
         if hasattr(record, 'rack'):
             if hasattr(record.rack, 'project_name'):
                 if record.rack.project_name is not None:
                     return f"{record.name} ({record.rack.project_name})"
 
+        if hasattr(record, 'parent'):
+            hasProjectName = ProjectNames.doLoop(record, record.parent)
+            if not hasProjectName == False:
+                return hasProjectName
+
         if hasattr(record, 'location'):
-            location = record.location
-            while True:
-                if hasattr(location, 'project_name'):
-                    if location.project_name is not None:
-                        return f"{record.name} ({location.project_name})"
-                if hasattr(location, 'parent'):
-                    if location.parent is not None:
-                        location = location.parent
-                        continue
-                break
+            hasProjectName = ProjectNames.doLoop(record, record.location)
+            if not hasProjectName == False:
+                return hasProjectName
 
         if hasattr(record, 'site'):
-            site = record.site
-            while True:
-                if hasattr(site, 'project_name'):
-                    if site.project_name is not None:
-                        return f"{record.name} ({site.project_name})"
-                if hasattr(site, 'parent'):
-                    if site.parent is not None:
-                        site = site.parent
-                        continue
-                break
+            hasProjectName = ProjectNames.doLoop(record, record.site)
+            if not hasProjectName == False:
+                return hasProjectName
+
         return f"{record.name}"
