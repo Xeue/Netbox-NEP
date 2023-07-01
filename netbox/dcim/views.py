@@ -135,6 +135,8 @@ class BulkDisconnectView(GetReturnURLMixin, ObjectPermissionRequiredMixin, View)
             'obj_type_plural': self.queryset.model._meta.verbose_name_plural,
             'selected_objects': selected_objects,
             'return_url': return_url,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -668,6 +670,8 @@ class RackElevationListView(generic.ObjectListView):
             'rack_face': rack_face,
             'filter_form': forms.RackElevationFilterForm(request.GET),
             'model': self.queryset.model,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -2060,6 +2064,8 @@ class DeviceRenderConfigView(generic.ObjectView):
         return render(request, self.get_template_name(), {
             'object': instance,
             'tab': self.tab,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
             **context,
         })
 
@@ -2780,6 +2786,8 @@ class DeviceBayPopulateView(generic.ObjectEditView):
             'device_bay': device_bay,
             'form': form,
             'return_url': self.get_return_url(request, device_bay),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request, pk):
@@ -2799,6 +2807,8 @@ class DeviceBayPopulateView(generic.ObjectEditView):
             'device_bay': device_bay,
             'form': form,
             'return_url': self.get_return_url(request, device_bay),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -2814,6 +2824,8 @@ class DeviceBayDepopulateView(generic.ObjectEditView):
             'device_bay': device_bay,
             'form': form,
             'return_url': self.get_return_url(request, device_bay),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request, pk):
@@ -2834,6 +2846,8 @@ class DeviceBayDepopulateView(generic.ObjectEditView):
             'device_bay': device_bay,
             'form': form,
             'return_url': self.get_return_url(request, device_bay),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -3274,6 +3288,8 @@ class VirtualChassisEditView(ObjectPermissionRequiredMixin, GetReturnURLMixin, V
             'vc_form': vc_form,
             'formset': formset,
             'return_url': self.get_return_url(request, virtual_chassis),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request, pk):
@@ -3314,6 +3330,8 @@ class VirtualChassisEditView(ObjectPermissionRequiredMixin, GetReturnURLMixin, V
             'vc_form': vc_form,
             'formset': formset,
             'return_url': self.get_return_url(request, virtual_chassis),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -3342,6 +3360,8 @@ class VirtualChassisAddMemberView(ObjectPermissionRequiredMixin, GetReturnURLMix
             'member_select_form': member_select_form,
             'membership_form': membership_form,
             'return_url': self.get_return_url(request, virtual_chassis),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request, pk):
@@ -3377,6 +3397,8 @@ class VirtualChassisAddMemberView(ObjectPermissionRequiredMixin, GetReturnURLMix
             'member_select_form': member_select_form,
             'membership_form': membership_form,
             'return_url': self.get_return_url(request, virtual_chassis),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -3395,6 +3417,8 @@ class VirtualChassisRemoveMemberView(ObjectPermissionRequiredMixin, GetReturnURL
             'device': device,
             'form': form,
             'return_url': self.get_return_url(request, device),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request, pk):
@@ -3426,6 +3450,8 @@ class VirtualChassisRemoveMemberView(ObjectPermissionRequiredMixin, GetReturnURL
             'device': device,
             'form': form,
             'return_url': self.get_return_url(request, device),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 

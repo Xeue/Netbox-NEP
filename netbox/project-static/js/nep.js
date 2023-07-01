@@ -414,6 +414,38 @@ function nbcm_add_status() {
     nbcm_build_menu("status");
 }
 
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+function eraseCookie(name) {   
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+if (!window.location.search.includes("site_id")) {
+    const site_id = getCookie('site_id') || 0;
+    const searchAdd = new URL(window.location);
+    searchAdd.searchParams.set('site_id', site_id);
+    window.location = searchAdd.toLocaleString();
+} else {
+    const searchGet = new URL(window.location);
+    setCookie("site_id",searchGet.searchParams.get('site_id'));
+}
 
 window.addEventListener("load", event => {
 
@@ -471,16 +503,21 @@ window.addEventListener("load", event => {
         } else if (e.target.tagName == 'A' || e.target.closest('A') != undefined) {
             const search = e.target.tagName == 'A' ? e.target : e.target.closest('A');
             const currentParams = new URLSearchParams(location.search);
-            const site_id = currentParams.get('site_id');
+            const site_id = currentParams.get('site_id') || 0;
             const searchURL = new URL(search.href);
+            if (searchURL.protocol == "ssh:") return;
+            if (searchURL.host != location.host) return;
             const searchParams = searchURL.searchParams;
             searchParams.set("site_id", site_id);
             const fullSearch = searchURL.pathname +"?"+ searchParams.toString();
             if (searchURL.pathname != location.pathname) {
                 e.preventDefault();
-                window.location = fullSearch;
-            } else {
-                e.preventDefault();
+                const target = search.getAttribute('target') || "";
+                if (target == "_blank") {
+                    window.open(fullSearch);
+                } else {
+                    window.location = fullSearch;
+                }
             }
         }
     });

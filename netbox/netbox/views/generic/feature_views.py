@@ -13,6 +13,7 @@ from extras.models import *
 from utilities.permissions import get_permission_for_model
 from utilities.views import GetReturnURLMixin, ViewTab
 from .base import BaseMultiObjectView
+from dcim.models import Site
 
 __all__ = (
     'BulkSyncDataView',
@@ -73,6 +74,8 @@ class ObjectChangeLogView(View):
             'table': objectchanges_table,
             'base_template': self.base_template,
             'tab': self.tab,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
         })
 
 
@@ -134,6 +137,8 @@ class ObjectJournalView(View):
             'table': journalentry_table,
             'base_template': self.base_template,
             'tab': self.tab,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
         })
 
 
@@ -187,6 +192,8 @@ class ObjectJobsView(View):
             'table': jobs_table,
             'base_template': self.base_template,
             'tab': self.tab,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
         })
 
 

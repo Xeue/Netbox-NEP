@@ -20,6 +20,7 @@ from utilities.views import GetReturnURLMixin
 from .base import BaseObjectView
 from .mixins import ActionsMixin, TableMixin
 from .utils import get_prerequisite_model
+from dcim.models import Site
 
 __all__ = (
     'ComponentCreateView',
@@ -70,6 +71,8 @@ class ObjectView(BaseObjectView):
         return render(request, self.get_template_name(), {
             'object': instance,
             'tab': self.tab,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request, instance),
         })
 
@@ -138,6 +141,8 @@ class ObjectChildrenView(ObjectView, ActionsMixin, TableMixin):
             return render(request, 'htmx/table.html', {
                 'object': instance,
                 'table': table,
+                'sites': Site.objects.all(),
+                'site_id': request.GET.get('site_id', '0'),
             })
 
         return render(request, self.get_template_name(), {
@@ -146,6 +151,8 @@ class ObjectChildrenView(ObjectView, ActionsMixin, TableMixin):
             'table': table,
             'actions': actions,
             'tab': self.tab,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request, instance),
         })
 
@@ -222,6 +229,8 @@ class ObjectEditView(GetReturnURLMixin, BaseObjectView):
         if is_htmx(request):
             return render(request, 'htmx/form.html', {
                 'form': form,
+                'sites': Site.objects.all(),
+                'site_id': request.GET.get('site_id', '0'),
             })
 
         return render(request, self.template_name, {
@@ -230,6 +239,8 @@ class ObjectEditView(GetReturnURLMixin, BaseObjectView):
             'form': form,
             'return_url': self.get_return_url(request, obj),
             'prerequisite_model': get_prerequisite_model(self.queryset),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request, obj),
         })
 
@@ -304,6 +315,8 @@ class ObjectEditView(GetReturnURLMixin, BaseObjectView):
             'object': obj,
             'form': form,
             'return_url': self.get_return_url(request, obj),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request, obj),
         })
 
@@ -340,6 +353,8 @@ class ObjectDeleteView(GetReturnURLMixin, BaseObjectView):
                 'object_type': self.queryset.model._meta.verbose_name,
                 'form': form,
                 'form_url': form_url,
+                'sites': Site.objects.all(),
+                'site_id': request.GET.get('site_id', '0'),
                 **self.get_extra_context(request, obj),
             })
 
@@ -347,6 +362,8 @@ class ObjectDeleteView(GetReturnURLMixin, BaseObjectView):
             'object': obj,
             'form': form,
             'return_url': self.get_return_url(request, obj),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request, obj),
         })
 
@@ -397,6 +414,8 @@ class ObjectDeleteView(GetReturnURLMixin, BaseObjectView):
             'object': obj,
             'form': form,
             'return_url': self.get_return_url(request, obj),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request, obj),
         })
 
@@ -435,12 +454,16 @@ class ComponentCreateView(GetReturnURLMixin, BaseObjectView):
         if is_htmx(request):
             return render(request, 'htmx/form.html', {
                 'form': form,
+                'sites': Site.objects.all(),
+                'site_id': request.GET.get('site_id', '0'),
             })
 
         return render(request, self.template_name, {
             'object': instance,
             'form': form,
             'return_url': self.get_return_url(request),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
         })
 
     def post(self, request):
@@ -505,4 +528,6 @@ class ComponentCreateView(GetReturnURLMixin, BaseObjectView):
             'object': instance,
             'form': form,
             'return_url': self.get_return_url(request),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
         })

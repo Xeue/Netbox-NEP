@@ -4,6 +4,7 @@ from django.http import Http404
 from django.shortcuts import render
 from django.utils.module_loading import import_string
 from django.views.generic import View
+from dcim.models import Site
 
 
 class ObjectSelectorView(View):
@@ -25,12 +26,16 @@ class ObjectSelectorView(View):
 
             return render(request, 'htmx/object_selector_results.html', {
                 'results': queryset[:100],
+                'sites': Site.objects.all(),
+                'site_id': request.GET.get('site_id', '0'),
             })
 
         return render(request, self.template_name, {
             'form': form,
             'model': model,
             'target_id': request.GET.get('target'),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
         })
 
     def _get_model(self, label):

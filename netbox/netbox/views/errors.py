@@ -11,6 +11,7 @@ from django.views.decorators.csrf import requires_csrf_token
 from django.views.defaults import ERROR_500_TEMPLATE_NAME, page_not_found
 from django.views.generic import View
 from sentry_sdk import capture_message
+from dcim.models import Site
 
 __all__ = (
     'handler_404',
@@ -25,7 +26,9 @@ class StaticMediaFailureView(View):
     """
     def get(self, request):
         return render(request, 'media_failure.html', {
-            'filename': request.GET.get('filename')
+            'filename': request.GET.get('filename'),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
         })
 
 

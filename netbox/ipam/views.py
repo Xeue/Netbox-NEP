@@ -812,6 +812,8 @@ class IPAddressAssignView(generic.ObjectView):
         return render(request, 'ipam/ipaddress_assign.html', {
             'form': form,
             'return_url': request.GET.get('return_url', ''),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request):
@@ -829,6 +831,8 @@ class IPAddressAssignView(generic.ObjectView):
             'form': form,
             'table': table,
             'return_url': request.GET.get('return_url'),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 

@@ -28,6 +28,7 @@ from utilities.views import GetReturnURLMixin
 from .base import BaseMultiObjectView
 from .mixins import ActionsMixin, TableMixin
 from .utils import get_prerequisite_model
+from dcim.models import Site
 
 __all__ = (
     'BulkComponentCreateView',
@@ -170,6 +171,8 @@ class ObjectListView(BaseMultiObjectView, ActionsMixin, TableMixin):
                     table.columns.hide('pk')
             return render(request, 'htmx/table.html', {
                 'table': table,
+                'sites': Site.objects.all(),
+                'site_id': request.GET.get('site_id', '0')
             })
 
         context = {
@@ -178,6 +181,8 @@ class ObjectListView(BaseMultiObjectView, ActionsMixin, TableMixin):
             'actions': actions,
             'filter_form': self.filterset_form(request.GET, label_suffix='') if self.filterset_form else None,
             'prerequisite_model': get_prerequisite_model(self.queryset),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request),
         }
 
@@ -243,6 +248,8 @@ class BulkCreateView(GetReturnURLMixin, BaseMultiObjectView):
             'form': form,
             'model_form': model_form,
             'return_url': self.get_return_url(request),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request),
         })
 
@@ -288,6 +295,7 @@ class BulkCreateView(GetReturnURLMixin, BaseMultiObjectView):
             'model_form': model_form,
             'obj_type': model._meta.verbose_name,
             'return_url': self.get_return_url(request),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request),
         })
 
@@ -432,6 +440,7 @@ class BulkImportView(GetReturnURLMixin, BaseMultiObjectView):
             'form': form,
             'fields': self.model_form().fields,
             'return_url': self.get_return_url(request),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request),
         })
 
@@ -477,6 +486,7 @@ class BulkImportView(GetReturnURLMixin, BaseMultiObjectView):
             'form': form,
             'fields': self.model_form().fields,
             'return_url': self.get_return_url(request),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request),
         })
 
@@ -643,6 +653,8 @@ class BulkEditView(GetReturnURLMixin, BaseMultiObjectView):
             'form': form,
             'table': table,
             'return_url': self.get_return_url(request),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request),
         })
 
@@ -730,6 +742,8 @@ class BulkRenameView(GetReturnURLMixin, BaseMultiObjectView):
             'obj_type_plural': self.queryset.model._meta.verbose_name_plural,
             'selected_objects': selected_objects,
             'return_url': self.get_return_url(request),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -829,6 +843,8 @@ class BulkDeleteView(GetReturnURLMixin, BaseMultiObjectView):
             'form': form,
             'table': table,
             'return_url': self.get_return_url(request),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
             **self.get_extra_context(request),
         })
 
@@ -943,4 +959,6 @@ class BulkComponentCreateView(GetReturnURLMixin, BaseMultiObjectView):
             'model_name': model_name,
             'table': table,
             'return_url': self.get_return_url(request),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
         })

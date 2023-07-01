@@ -693,6 +693,8 @@ class DashboardResetView(LoginRequiredMixin, View):
         return render(request, self.template_name, {
             'form': form,
             'return_url': reverse('home'),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request):
@@ -707,6 +709,8 @@ class DashboardResetView(LoginRequiredMixin, View):
         return render(request, self.template_name, {
             'form': form,
             'return_url': reverse('home'),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -729,6 +733,8 @@ class DashboardWidgetAddView(LoginRequiredMixin, View):
             'widget_class': widget_class,
             'widget_form': widget_form,
             'config_form': config_form,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request):
@@ -757,6 +763,8 @@ class DashboardWidgetAddView(LoginRequiredMixin, View):
             'widget_class': widget_class,
             'widget_form': widget_form,
             'config_form': config_form,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -775,7 +783,9 @@ class DashboardWidgetConfigView(LoginRequiredMixin, View):
             'widget_class': widget.__class__,
             'widget_form': widget_form,
             'config_form': config_form,
-            'form_url': reverse('extras:dashboardwidget_config', kwargs={'id': id})
+            'form_url': reverse('extras:dashboardwidget_config', kwargs={'id': id}),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request, id):
@@ -797,7 +807,9 @@ class DashboardWidgetConfigView(LoginRequiredMixin, View):
         return render(request, self.template_name, {
             'widget_form': widget_form,
             'config_form': config_form,
-            'form_url': reverse('extras:dashboardwidget_config', kwargs={'id': id})
+            'form_url': reverse('extras:dashboardwidget_config', kwargs={'id': id}),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -815,7 +827,9 @@ class DashboardWidgetDeleteView(LoginRequiredMixin, View):
             'object_type': widget.__class__.__name__,
             'object': widget,
             'form': form,
-            'form_url': reverse('extras:dashboardwidget_delete', kwargs={'id': id})
+            'form_url': reverse('extras:dashboardwidget_delete', kwargs={'id': id}),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request, id):
@@ -864,6 +878,8 @@ class ReportListView(ContentTypePermissionRequiredMixin, View):
         return render(request, 'extras/report_list.html', {
             'model': ReportModule,
             'report_modules': report_modules,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -890,6 +906,8 @@ class ReportView(ContentTypePermissionRequiredMixin, View):
             'module': module,
             'report': report,
             'form': ReportForm(scheduling_enabled=report.scheduling_enabled),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request, module, name):
@@ -907,6 +925,8 @@ class ReportView(ContentTypePermissionRequiredMixin, View):
                 messages.error(request, "Unable to run report: RQ worker process not running.")
                 return render(request, 'extras/report.html', {
                     'report': report,
+                    'sites': Site.objects.all(),
+                    'site_id': request.GET.get('site_id', '0')
                 })
 
             # Run the Report. A new Job is created.
@@ -926,6 +946,8 @@ class ReportView(ContentTypePermissionRequiredMixin, View):
             'module': module,
             'report': report,
             'form': form,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -942,6 +964,8 @@ class ReportSourceView(ContentTypePermissionRequiredMixin, View):
             'module': module,
             'report': report,
             'tab': 'source',
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -973,6 +997,8 @@ class ReportJobsView(ContentTypePermissionRequiredMixin, View):
             'report': report,
             'table': jobs_table,
             'tab': 'jobs',
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -1003,6 +1029,8 @@ class ReportResultView(ContentTypePermissionRequiredMixin, View):
         return render(request, 'extras/report_result.html', {
             'report': report,
             'job': job,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -1037,6 +1065,8 @@ class ScriptListView(ContentTypePermissionRequiredMixin, View):
         return render(request, 'extras/script_list.html', {
             'model': ScriptModule,
             'script_modules': script_modules,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -1064,6 +1094,8 @@ class ScriptView(ContentTypePermissionRequiredMixin, View):
             'module': module,
             'script': script,
             'form': form,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request, module, name):
@@ -1098,6 +1130,8 @@ class ScriptView(ContentTypePermissionRequiredMixin, View):
             'module': module,
             'script': script,
             'form': form,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -1114,6 +1148,8 @@ class ScriptSourceView(ContentTypePermissionRequiredMixin, View):
             'module': module,
             'script': script,
             'tab': 'source',
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -1145,6 +1181,8 @@ class ScriptJobsView(ContentTypePermissionRequiredMixin, View):
             'script': script,
             'table': jobs_table,
             'tab': 'jobs',
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
@@ -1173,6 +1211,8 @@ class ScriptResultView(ContentTypePermissionRequiredMixin, View):
         return render(request, 'extras/script_result.html', {
             'script': script,
             'job': job,
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 

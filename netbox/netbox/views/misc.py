@@ -48,8 +48,10 @@ class HomeView(View):
                         'version': str(release_version),
                         'url': release_url,
                     }
-
-        site_id = request.GET.get('site_id', '0')
+        try:
+            site_id = request.GET.get('site_id', '0')
+        except:
+            site_id = '0'
 
         return render(request, self.template_name, {
             'dashboard': dashboard,
@@ -106,11 +108,18 @@ class SearchView(View):
         if is_htmx(request):
             return render(request, 'htmx/table.html', {
                 'table': table,
+                'sites': Site.objects.all(),
+                'site_id': request.GET.get('site_id', '0'),
             })
+
+        try:
+            site_id = request.GET.get('site_id', '0')
+        except:
+            site_id = '0'
 
         return render(request, 'search.html', {
             'form': form,
             'table': table,
             'sites': Site.objects.all(),
-            'site_id':request.GET.site_id
+            'site_id':site_id
         })

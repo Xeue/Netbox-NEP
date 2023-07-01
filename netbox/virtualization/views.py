@@ -17,6 +17,7 @@ from utilities.utils import count_related
 from utilities.views import ViewTab, register_model_view
 from . import filtersets, forms, tables
 from .models import Cluster, ClusterGroup, ClusterType, VirtualMachine, VMInterface
+from dcim.models import Site
 
 
 #
@@ -248,6 +249,8 @@ class ClusterAddDevicesView(generic.ObjectEditView):
             'cluster': cluster,
             'form': form,
             'return_url': reverse('virtualization:cluster', kwargs={'pk': pk}),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
         })
 
     def post(self, request, pk):
@@ -273,6 +276,8 @@ class ClusterAddDevicesView(generic.ObjectEditView):
             'cluster': cluster,
             'form': form,
             'return_url': cluster.get_absolute_url(),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
         })
 
 
@@ -315,6 +320,8 @@ class ClusterRemoveDevicesView(generic.ObjectEditView):
             'table': device_table,
             'obj_type_plural': 'devices',
             'return_url': cluster.get_absolute_url(),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0'),
         })
 
 

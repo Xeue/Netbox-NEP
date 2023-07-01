@@ -348,6 +348,8 @@ class CircuitSwapTerminations(generic.ObjectEditView):
             'panel_class': 'light',
             'button_class': 'primary',
             'return_url': circuit.get_absolute_url(),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
     def post(self, request, pk):
@@ -396,6 +398,8 @@ class CircuitSwapTerminations(generic.ObjectEditView):
             'panel_class': 'default',
             'button_class': 'primary',
             'return_url': circuit.get_absolute_url(),
+            'sites': Site.objects.all(),
+            'site_id': request.GET.get('site_id', '0')
         })
 
 
