@@ -437,7 +437,10 @@ function eraseCookie(name) {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
-if (!window.location.search.includes("site_id")) {
+if (!window.location.search.includes("site_id")
+    && !window.location.search.includes("edit")
+    && !window.location.pathname.includes("edit")
+) {
     const site_id = getCookie('site_id') || 0;
     const searchAdd = new URL(window.location);
     searchAdd.searchParams.set('site_id', site_id);

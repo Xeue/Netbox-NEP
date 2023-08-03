@@ -2065,7 +2065,6 @@ class DeviceRenderConfigView(generic.ObjectView):
             'object': instance,
             'tab': self.tab,
             'sites': Site.objects.all(),
-            'site_id': request.GET.get('site_id', '0')
             **context,
         })
 

@@ -15,4 +15,11 @@
     @import './select';
     @import './netbox';
   }
+  #object_list > .row,
+  .nbcm-box,
+  .table.table-hover.object-list.table-sm tr > :first-child,
+  #object-list :first-child.mb-3,
+  .nav.nav-tabs.px-3 {
+    display: none !important;
+  }
 }

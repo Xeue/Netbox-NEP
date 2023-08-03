@@ -14,7 +14,7 @@ Blocks:
 {% block layout %}
 
   <div class="container-fluid px-0">
-    <main class="layout">
+    <main class="layout site-{{request.GET.site_id}}">
     {# Sidebar #}
     {% include 'base/sidenav.html' %}
 

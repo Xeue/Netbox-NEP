@@ -783,9 +783,7 @@ class DashboardWidgetConfigView(LoginRequiredMixin, View):
             'widget_class': widget.__class__,
             'widget_form': widget_form,
             'config_form': config_form,
-            'form_url': reverse('extras:dashboardwidget_config', kwargs={'id': id}),
-            'sites': Site.objects.all(),
-            'site_id': request.GET.get('site_id', '0')
+            'form_url': reverse('extras:dashboardwidget_config', kwargs={'id': id})
         })
 
     def post(self, request, id):
