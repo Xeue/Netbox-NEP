@@ -534,6 +534,21 @@ class DeviceBulkEditForm(NetBoxModelBulkEditForm):
             'site_id': '$site'
         }
     )
+    rack = forms.CharField(
+        max_length=0,
+        required=False,
+        help_text=_("Do not enter data here, can only be used with 'Set Null'")
+    )
+    position = forms.CharField(
+        max_length=0,
+        required=False,
+        help_text=_("Do not enter data here, can only be used with 'Set Null'")
+    )
+    face = forms.CharField(
+        max_length=0,
+        required=False,
+        help_text=_("Do not enter data here, can only be used with 'Set Null'")
+    )
     tenant = DynamicModelChoiceField(
         queryset=Tenant.objects.all(),
         required=False
@@ -575,12 +590,12 @@ class DeviceBulkEditForm(NetBoxModelBulkEditForm):
     model = Device
     fieldsets = (
         ('Device', ('device_role', 'status', 'tenant', 'platform', 'project_name', 'description')),
-        ('Location', ('site', 'location')),
+        ('Location', ('site', 'location', 'rack', 'position', 'face')),
         ('Hardware', ('manufacturer', 'device_type', 'airflow', 'serial')),
         ('Configuration', ('config_template',)),
     )
     nullable_fields = (
-        'location', 'tenant', 'platform', 'serial', 'airflow', 'project_name', 'description', 'comments',
+        'location', 'tenant', 'platform', 'serial', 'airflow', 'project_name', 'description', 'comments', 'rack', 'position', 'face'
     )
 
 

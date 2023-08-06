@@ -8,19 +8,21 @@
 
     {# Full Logo #}
     <a class="sidenav-brand test" href="{% url 'home' %}">
-      <img src='{% static "nep_logo"|add:request.GET.site_id|add:".svg" %}'
+      {% with searchId=request.GET.site_id %}
+      <img src='{% static "nep_logo"|add:searchId|add:".svg" %}'
         class="sidenav-brand-img logo-light"
         height="48"
         alt="NetBox Logo"
         onerror="if (this.src != '{% static "nep_logo.svg" %}') this.src = '{% static "nep_logo.svg" %}';"
       >
 
-      <img src='{% static "nep_logo_light"|add:request.GET.site_id|add:".svg" %}'
+      <img src='{% static "nep_logo_light"|add:searchId|add:".svg" %}'
         class="sidenav-brand-img logo-dark"
         height="48"
         alt="NetBox Logo"
         onerror="if (this.src != '{% static "nep_logo_light.svg" %}') this.src = '{% static "nep_logo_light.svg" %}';"
       >
+      {% endwith %}
     </a>
 
     {# Icon Logo #}

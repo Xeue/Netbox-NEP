@@ -51,7 +51,7 @@ class HomeView(View):
         try:
             site_id = request.GET.get('site_id', '0')
         except:
-            site_id = '0'
+            site_id = 0
 
         return render(request, self.template_name, {
             'dashboard': dashboard,
@@ -115,7 +115,7 @@ class SearchView(View):
         try:
             site_id = request.GET.get('site_id', '0')
         except:
-            site_id = '0'
+            site_id = 0
 
         return render(request, 'search.html', {
             'form': form,

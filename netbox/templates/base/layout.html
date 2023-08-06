@@ -14,7 +14,9 @@ Blocks:
 {% block layout %}
 
   <div class="container-fluid px-0">
-    <main class="layout site-{{request.GET.site_id}}">
+    {% with searchId=request.GET.site_id %}
+    <main class="layout site-{{searchId}}">
+    {% endwith %}
     {# Sidebar #}
     {% include 'base/sidenav.html' %}
 

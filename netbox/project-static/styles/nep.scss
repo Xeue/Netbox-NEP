@@ -229,46 +229,6 @@ tr:has(.form-check-input:checked) {
 }
 
 @media (min-width: 850px) {
-	.form.form-horizontal .noprint.bulk-buttons {
-		position: sticky;
-		bottom: 5px;
-		padding: 0px 4px;
-		width: max-content;
-	}
-	.form.form-horizontal .noprint.bulk-buttons .bulk-button-group{
-		background-color: var(--bg-col);
-		border: 1px solid var(--border-col);
-		border-radius: 10px;
-		padding: 2px;
-	}
-	.card #object_list .row {
-		justify-content: end;
-		position: sticky;
-		bottom: 5px;
-		padding: 0px 4px;
-	}
-	.card #object_list .row > * {
-		width: auto;
-		padding: 5px;
-		background-color: var(--bg-col);
-		border: 1px solid var(--border-col);
-	}
-	.card #object_list .row > :first-child {
-		border-right: none;
-		border-radius: 10px 0px 0px 10px;
-	}
-	.card #object_list .row > :last-child {
-		border-left: none;
-		border-radius: 0px 10px 10px 0px;
-		display: flex;
-		align-content: center;
-		align-items: center;
-		margin-left: -3px;
-		padding-left: 0;
-	}
-	.card #object_list .row > :last-child .dropdown.dropup {
-		padding-right: 10px;
-	}
 	#filters-form .card-footer {
 		position: sticky;
 		bottom: 0;
