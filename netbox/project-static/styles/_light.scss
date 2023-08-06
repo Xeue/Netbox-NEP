@@ -5,3 +5,9 @@
 @import './select.scss';
 @import './netbox.scss';
 @import './nep.scss';
+
+html[data-netbox-color-mode="light"] {
+	.dashboard-card .bg-secondary .dashboard-title {
+		color: rgb(0, 0, 0) !important;
+	}
+}
