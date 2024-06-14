@@ -11,14 +11,14 @@
         {% endfor %}
       {% endwith %}
     </button>
-    <ul class="dropdown-menu dropdown-menu-end">
-      <li>
+    <ul class="dropdown-menu dropdown-menu-end overflow-auto py-0">
+      <li class="d-flex flex-column">
         <button type="button" class="dropdown-item site-selector" data-site-id="0">
-          <i class="mdi mdi-map"></i>
+          <i class="mdi mdi-earth"></i>
           <span>All</span>
         </button>
         {% for site in sites %}
-          <button type="button" class="dropdown-item site-selector" data-site-id="{{site.id}}">
+          <button type="button" class="dropdown-item site-selector" data-site-id="{{site.id}}" data-status="{{site.status}}">
             <i class="mdi mdi-map"></i>
             <span>{{ site }}</span>
           </button>

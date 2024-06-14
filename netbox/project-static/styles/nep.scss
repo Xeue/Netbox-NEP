@@ -86,6 +86,39 @@
 	white-space: nowrap;
 }
 
+.site-selector[data-status="active"] {
+	order: 0;
+	background-color: var(--bs-success);
+}
+.site-selector[data-status="planned"] {
+	order: 1;
+	background-color: var(--bs-primary);
+}
+.site-selector[data-status="decommissioning"] {
+	order: 2;
+	background-color: var(--bs-orange);
+}
+.site-selector[data-status="retired"] {
+	order: 3;
+	background-color: var(--bs-danger);
+}
+
+.site-selector[data-status]:hover {
+	background-color: rgb(108, 117, 125);
+}
+
+.iframed .sidenav,
+.iframed .navbar,
+.iframed .nav,
+.iframed .title-container {
+  display: none !important;
+}
+
+.iframed .content-container {
+  margin: 0 !important;
+  width: 100% !important;
+}
+
 table .link-custom {
 	display: inline-block;
 	padding: .35em .65em;

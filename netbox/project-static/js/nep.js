@@ -233,6 +233,13 @@ function nbcmShowbox(e) {
             } else {
                 payload = `{"custom_fields": {"${field}":${status}}}`
             }
+
+
+            const hasMenu = document.getElementsByClassName("nbcm-open");
+            if (hasMenu.length == 0) return;
+            const target = hasMenu[0].parentElement;
+
+            
             fetch(uri+'/', {
                 credentials: "omit",
                 method: 'PATCH',
@@ -243,9 +250,6 @@ function nbcmShowbox(e) {
                 },
                 body: payload
             }).then(response => {
-                const hasMenu = document.getElementsByClassName("nbcm-open");
-                if (hasMenu.length == 0) return;
-                const target = hasMenu[0].parentElement;
                 if (field == "status") {
                     target.classList.remove('bg-purple','bg-cyan','bg-white','bg-red','bg-green','bg-blue','bg-indigo','bg-yellow');
                     const textCont = target.querySelector('.status_label')
@@ -440,6 +444,9 @@ function eraseCookie(name) {
 if (!window.location.search.includes("site_id")
     && !window.location.search.includes("edit")
     && !window.location.pathname.includes("edit")
+    && !window.location.pathname.includes("disconnect")
+    && !window.location.pathname.includes("delete")
+    && !window.location.pathname.includes("rename")
 ) {
     const site_id = getCookie('site_id') || 0;
     const searchAdd = new URL(window.location);
@@ -452,11 +459,20 @@ if (!window.location.search.includes("site_id")
 
 window.addEventListener("load", event => {
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const iframed = urlParams.get('iframed');
+    const closeme = urlParams.get('closeme');
+
+    if (iframed) document.getElementsByTagName('body')[0].classList.add('iframed');
+    if (closeme) frameElement.parentNode.setAttribute("src", "");
+
     if (location.pathname == '/') {
         nbcm_add_status();
     } else {
         nbcm_add_burgers();
     }
+
+
     
     const nbcm_targetNode = document.getElementById('object_list');
     if (nbcm_targetNode) {
